@@ -1,4 +1,4 @@
-const isString = (data) => typeof data === 'string'
+const isPrimitive = (data) => data !== Object(data)
 const isArray = (data) => Array.isArray(data)
 const isObject = (data) =>
   typeof data === 'object' && !isArray(data) && data !== null
@@ -49,8 +49,8 @@ export class Builder {
       this.#objectExecution(data, containerEl)
     } else if (isArray(data)) {
       this.#arrayExecution(data, containerEl)
-    } else if (isString(data)) {
-      this.#stringExecution(data, containerEl)
+    } else if (isPrimitive(data)) {
+      this.#primitiveExecution(data, containerEl)
     }
   }
 
@@ -64,7 +64,7 @@ export class Builder {
     Object.entries(data).forEach((entry) => {
       const [key, value] = entry
 
-      if (isString(value)) {
+      if (isPrimitive(value)) {
         objectContainer.appendChild(this.#createField(key, value))
       } else if (isArray(value)) {
         const arraySectionEl = this.#createArraySection(key)
@@ -100,7 +100,7 @@ export class Builder {
    * @param  {any} data
    * @param  {HTMLElement} containerEl
    */
-  #stringExecution(data, containerEl) {
+  #primitiveExecution(data, containerEl) {
     containerEl.appendChild(this.#createValue(data))
   }
 
@@ -193,7 +193,7 @@ export class Builder {
 
   /**
    * @param  {string} key
-   * @param  {string} value
+   * @param  {any} value
    * @returns HTMLElement
    */
   #createField(key, value) {
@@ -213,7 +213,7 @@ export class Builder {
   }
 
   /**
-   * @param  {string} value
+   * @param  {any} value
    * @returns HTMLElement
    */
   #createValue(value) {
