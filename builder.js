@@ -1,6 +1,5 @@
 const isString = (data) => typeof data === 'string'
 const isArray = (data) => Array.isArray(data)
-const isArrayEmpty = (arr) => arr.length === 0
 const isObject = (data) =>
   typeof data === 'object' && !isArray(data) && data !== null
 
@@ -53,36 +52,26 @@ export class Builder {
         const [key, value] = entry
 
         if (isString(value)) {
-          const field = this.#createField(key, value)
-
-          objectContainer.appendChild(field)
+          objectContainer.appendChild(this.#createField(key, value))
         } else if (isArray(value)) {
           const arrayContainer = this.#createArraySection(key)
 
           this.#execute(value, arrayContainer)
-
           objectContainer.appendChild(arrayContainer)
         }
       })
 
       containerEl.appendChild(objectContainer)
-    } else if (isArray(data) && !isArrayEmpty(data)) {
-      if (!isArrayEmpty(data)) {
-        const arrayContainer = this.#createArrayContainer()
-        const sampleItem = data[0]
+    } else if (isArray(data)) {
+      const arrayContainer = this.#createArrayContainer()
 
-        if (isString(sampleItem)) {
-          for (const value of data) {
-            arrayContainer.appendChild(this.#createValue(value))
-          }
-        } else if (isObject(sampleItem)) {
-          for (const value of data) {
-            this.#execute(value, arrayContainer)
-          }
-        }
-
-        containerEl.appendChild(arrayContainer)
+      for (const value of data) {
+        this.#execute(value, arrayContainer)
       }
+
+      containerEl.appendChild(arrayContainer)
+    } else if (isString(data)) {
+      containerEl.appendChild(this.#createValue(data))
     }
   }
 
