@@ -1,18 +1,30 @@
 const isString = (data) => typeof data === 'string'
 const isArray = (data) => Array.isArray(data)
+const isArrayEmpty = (arr) => arr.length === 0
 const isObject = (data) =>
   typeof data === 'object' && !isArray(data) && data !== null
 
 export class Builder {
   ClassNames = {
+    Value: {
+      Base: 'value'
+    },
     Field: {
       Base: 'field-container',
       Key: 'key',
-      Value: 'value',
+    },
+    Container: {
+      Base: "base-container",
+      Array: 'array',
+      Object: 'object'
     },
     Section: {
+      Header: {
+        Base: 'section-header',
+      },
       Base: 'section-container',
-      Object: 'object'
+      Object: 'object',
+      Array: 'array',
     },
   }
 
@@ -21,7 +33,12 @@ export class Builder {
    * @param  {HTMLElement} containerEl
    */
   constructor(data, containerEl) {
-    this.#execute(data, containerEl)
+    this.data = data
+    this.containerEl = containerEl
+  }
+
+  execute() {
+    this.#execute(this.data, this.containerEl)
   }
 
   /**
@@ -30,7 +47,7 @@ export class Builder {
    */
   #execute(data, containerEl) {
     if (isObject(data)) {
-      const objectContainer = this.#createObjectSection()
+      const objectContainer = this.#createObjectContainer()
 
       Object.entries(data).forEach((entry) => {
         const [key, value] = entry
@@ -39,22 +56,78 @@ export class Builder {
           const field = this.#createField(key, value)
 
           objectContainer.appendChild(field)
+        } else if (isArray(value)) {
+          const arrayContainer = this.#createArraySection(key)
+
+          this.#execute(value, arrayContainer)
+
+          objectContainer.appendChild(arrayContainer)
         }
       })
 
       containerEl.appendChild(objectContainer)
+    } else if (isArray(data) && !isArrayEmpty(data)) {
+      if (!isArrayEmpty(data)) {
+        const firstItem = data[0]
+
+        if (isString(firstItem)) {
+          const arrayContainer = this.#createArrayContainer()
+
+          for (const value of data) {
+            arrayContainer.appendChild(this.#createValue(value))
+          }
+
+          containerEl.appendChild(arrayContainer)
+        }
+      }
     }
+  }
+
+  /**
+   * @param {string} title
+   * @returns HTMLElement
+   */
+  #createArraySection(title) {
+    const sectionEl = this.#createSection()
+    const sectionHeader = this.#createSectionHeader(title)
+
+    sectionEl.classList.add(this.ClassNames.Section.Array)
+    sectionEl.appendChild(sectionHeader)
+
+    return sectionEl
   }
 
   /**
    * @returns HTMLElement
    */
-  #createObjectSection() {
-    const sectionEl = this.#createSection()
+  #createArrayContainer() {
+    const sectionEl = this.#createContainer()
 
-    sectionEl.classList.add(this.ClassNames.Section.Object)
+    sectionEl.classList.add(this.ClassNames.Container.Array)
 
     return sectionEl
+  }
+
+  /**
+   * @returns HTMLElement
+   */
+  #createObjectContainer() {
+    const sectionEl = this.#createContainer()
+
+    sectionEl.classList.add(this.ClassNames.Container.Object)
+
+    return sectionEl
+  }
+
+  /**
+   * @returns HTMLElement
+   */
+  #createContainer() {
+    const articleEl = document.createElement('article')
+
+    articleEl.classList.add(this.ClassNames.Container.Base)
+
+    return articleEl
   }
 
   /**
@@ -69,6 +142,21 @@ export class Builder {
   }
 
   /**
+   * @param  {string} title
+   * @returns HTMLElement
+   */
+  #createSectionHeader(title) {
+    const headerEl = document.createElement('header')
+    const titleEl = document.createElement('h2')
+
+    titleEl.textContent = title
+    headerEl.classList.add(this.ClassNames.Section.Header.Base)
+    headerEl.appendChild(titleEl)
+
+    return headerEl
+  }
+
+  /**
    * @param  {string} key
    * @param  {string} value
    * @returns HTMLElement
@@ -76,18 +164,29 @@ export class Builder {
   #createField(key, value) {
     const containerEl = document.createElement('div')
     const keyEl = document.createElement('p')
-    const valueEl = document.createElement('p')
+    const valueEl = this.#createValue(value)
 
     keyEl.textContent = `${key}:`
-    valueEl.textContent = value
 
     containerEl.classList.add(this.ClassNames.Field.Base)
     keyEl.classList.add(this.ClassNames.Field.Key)
-    valueEl.classList.add(this.ClassNames.Field.Value)
 
     containerEl.appendChild(keyEl)
     containerEl.appendChild(valueEl)
 
     return containerEl
+  }
+
+  /**
+   * @param  {string} value
+   * @returns HTMLElement
+   */
+  #createValue(value) {
+    const valueEl = document.createElement('p')
+
+    valueEl.textContent = value
+    valueEl.classList.add(this.ClassNames.Value.Base)
+
+    return valueEl
   }
 }
