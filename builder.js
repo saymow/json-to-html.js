@@ -7,16 +7,16 @@ const isObject = (data) =>
 export class Builder {
   ClassNames = {
     Value: {
-      Base: 'value'
+      Base: 'value',
     },
     Field: {
       Base: 'field-container',
       Key: 'key',
     },
     Container: {
-      Base: "base-container",
+      Base: 'base-container',
       Array: 'array',
-      Object: 'object'
+      Object: 'object',
     },
     Section: {
       Header: {
@@ -68,17 +68,20 @@ export class Builder {
       containerEl.appendChild(objectContainer)
     } else if (isArray(data) && !isArrayEmpty(data)) {
       if (!isArrayEmpty(data)) {
-        const firstItem = data[0]
+        const arrayContainer = this.#createArrayContainer()
+        const sampleItem = data[0]
 
-        if (isString(firstItem)) {
-          const arrayContainer = this.#createArrayContainer()
-
+        if (isString(sampleItem)) {
           for (const value of data) {
             arrayContainer.appendChild(this.#createValue(value))
           }
-
-          containerEl.appendChild(arrayContainer)
+        } else if (isObject(sampleItem)) {
+          for (const value of data) {
+            this.#execute(value, arrayContainer)
+          }
         }
+
+        containerEl.appendChild(arrayContainer)
       }
     }
   }

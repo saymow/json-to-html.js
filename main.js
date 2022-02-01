@@ -5,4 +5,4 @@ const contentContainerEl = document.querySelector(
   '[data-id="content-container"]',
 )
 
-new Builder(sampleList.sample2, contentContainerEl).execute()
+new Builder(sampleList.sample3, contentContainerEl).execute()
