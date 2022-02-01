@@ -46,38 +46,62 @@ export class Builder {
    */
   #execute(data, containerEl) {
     if (isObject(data)) {
-      const objectContainer = this.#createObjectContainer()
-
-      Object.entries(data).forEach((entry) => {
-        const [key, value] = entry
-
-        if (isString(value)) {
-          objectContainer.appendChild(this.#createField(key, value))
-        } else if (isArray(value)) {
-          const arraySectionEl = this.#createArraySection(key)
-
-          this.#execute(value, arraySectionEl)
-          objectContainer.appendChild(arraySectionEl)
-        } else if (isObject(value)) {
-          const objectSectionEl = this.#createObjectSection(key)
-          
-          this.#execute(value, objectSectionEl)
-          objectContainer.appendChild(objectSectionEl)
-        }
-      })
-
-      containerEl.appendChild(objectContainer)
+      this.#objectExecution(data, containerEl)
     } else if (isArray(data)) {
-      const arrayContainer = this.#createArrayContainer()
-
-      for (const value of data) {
-        this.#execute(value, arrayContainer)
-      }
-
-      containerEl.appendChild(arrayContainer)
+      this.#arrayExecution(data, containerEl)
     } else if (isString(data)) {
-      containerEl.appendChild(this.#createValue(data))
+      this.#stringExecution(data, containerEl)
     }
+  }
+
+  /**
+   * @param  {any} data
+   * @param  {HTMLElement} containerEl
+   */
+  #objectExecution(data, containerEl) {
+    const objectContainer = this.#createObjectContainer()
+
+    Object.entries(data).forEach((entry) => {
+      const [key, value] = entry
+
+      if (isString(value)) {
+        objectContainer.appendChild(this.#createField(key, value))
+      } else if (isArray(value)) {
+        const arraySectionEl = this.#createArraySection(key)
+        this.#execute(value, arraySectionEl)
+
+        objectContainer.appendChild(arraySectionEl)
+      } else if (isObject(value)) {
+        const objectSectionEl = this.#createObjectSection(key)
+        this.#execute(value, objectSectionEl)
+
+        objectContainer.appendChild(objectSectionEl)
+      }
+    })
+
+    containerEl.appendChild(objectContainer)
+  }
+
+  /**
+   * @param  {any} data
+   * @param  {HTMLElement} containerEl
+   */
+  #arrayExecution(data, containerEl) {
+    const arrayContainer = this.#createArrayContainer()
+
+    for (const value of data) {
+      this.#execute(value, arrayContainer)
+    }
+
+    containerEl.appendChild(arrayContainer)
+  }
+
+  /**
+   * @param  {any} data
+   * @param  {HTMLElement} containerEl
+   */
+  #stringExecution(data, containerEl) {
+    containerEl.appendChild(this.#createValue(data))
   }
 
   /**
@@ -93,7 +117,7 @@ export class Builder {
 
     return sectionEl
   }
-  
+
   /**
    * @param {string} title
    * @returns HTMLElement
