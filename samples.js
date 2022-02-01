@@ -57,3 +57,45 @@ export const sample3 = {
     },
   ],
 }
+
+export const sample4 = {
+  name: 'Gustavo',
+  surname: 'Alves',
+  age: 21,
+  email: 'gustavo_alves2010@yahoo.com.br',
+  skills: [
+    {
+      title: 'Clean Architecture',
+      level: 'Intermediate',
+    },
+    {
+      title: 'TDD',
+      level: 'Intermediate',
+    },
+    {
+      title: 'DDD',
+      level: 'Beginner',
+    },
+    {
+      title: 'Algorithms && Data Structures',
+      level: 'Intermediate',
+    },
+    {
+      title: 'Javascript',
+      level: "Advanced"
+    },
+    {
+      title: 'Typescript',
+      level: "Advanced"
+    },
+    {
+      title: 'NodeJS',
+      level: "Intermediate"
+    },
+  ],
+  address: {
+    country: 'Brazil',
+    state: 'Minas Gerais',
+    city: 'Betim'
+  }
+}

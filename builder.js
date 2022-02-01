@@ -54,10 +54,15 @@ export class Builder {
         if (isString(value)) {
           objectContainer.appendChild(this.#createField(key, value))
         } else if (isArray(value)) {
-          const arrayContainer = this.#createArraySection(key)
+          const arraySectionEl = this.#createArraySection(key)
 
-          this.#execute(value, arrayContainer)
-          objectContainer.appendChild(arrayContainer)
+          this.#execute(value, arraySectionEl)
+          objectContainer.appendChild(arraySectionEl)
+        } else if (isObject(value)) {
+          const objectSectionEl = this.#createObjectSection(key)
+          
+          this.#execute(value, objectSectionEl)
+          objectContainer.appendChild(objectSectionEl)
         }
       })
 
@@ -84,6 +89,20 @@ export class Builder {
     const sectionHeader = this.#createSectionHeader(title)
 
     sectionEl.classList.add(this.ClassNames.Section.Array)
+    sectionEl.appendChild(sectionHeader)
+
+    return sectionEl
+  }
+  
+  /**
+   * @param {string} title
+   * @returns HTMLElement
+   */
+  #createObjectSection(title) {
+    const sectionEl = this.#createSection()
+    const sectionHeader = this.#createSectionHeader(title)
+
+    sectionEl.classList.add(this.ClassNames.Section.Object)
     sectionEl.appendChild(sectionHeader)
 
     return sectionEl
