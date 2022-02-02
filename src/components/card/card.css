@@ -1,0 +1,14 @@
+.card {
+  height: 100%;
+  width: 100%;
+  
+  padding: 10px;
+}
+
+.card.primary {
+  background: var(--bg-color-tertiary);
+}
+
+.card.secondary {
+  background: var(--bg-color-secondary);
+}

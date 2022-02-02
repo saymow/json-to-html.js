@@ -20,3 +20,16 @@ body {
   box-sizing: border-box;
   color: var(--font-color);
 }
+
+.scrollbar.vertical::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar.horizontal::-webkit-scrollbar {
+  height: 4px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--bg-color-primary);
+  border-radius: 4px; 
+}

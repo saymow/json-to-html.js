@@ -1,14 +1,35 @@
 .content-container {
-  max-width: 60%;
-  width: 600px;
-  margin: auto;
-
-  height: 100%;
   overflow: auto;
 
   background: var(--bg-color-tertiary);
 
   padding: 10px;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.card-container {
+  flex: 1;
+  overflow: hidden;
+}
+
+.card {
+  overflow: auto;
+}
+
+.select {
+  width: 100%;
+  font-size: 20px;
+}
+
+.sample-presenter {
+  margin-top: 10px;
 }
 
 /* ------------------------------------- BUILDER STYLES ------------------------------------- */

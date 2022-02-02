@@ -1,0 +1,5 @@
+.sample-presenter {
+  background: var(--bg-color-primary);
+  padding: 10px;
+  white-space: pre-wrap;
+}
