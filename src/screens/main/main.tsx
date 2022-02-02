@@ -1,12 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Card from '../../components/card/card'
 import SamplePresenter from '../../components/sample-presenter/sample-presenter'
 import SelectBlock, {
-  SelectOptionsProps,
+  SelectOptionsProps
 } from '../../components/select-block/select-block'
-import samples from '../../data/samples'
 import { Builder } from '../../helpers/builder'
 import { Sample } from '../../models/sample'
+import { GlobalState } from '../../store'
+import { changeSelectedSample } from '../../store/actions'
+import { SamplesState } from '../../store/reducers/samplesReducer'
 import './main.css'
 
 const samplesToOptions = (sampleList: Sample[]): SelectOptionsProps => {
@@ -18,35 +21,37 @@ const samplesToOptions = (sampleList: Sample[]): SelectOptionsProps => {
 }
 
 const Main: React.FC = () => {
+  const dispatch = useDispatch()
+  const { samples, selectedSample } = useSelector<GlobalState>(
+    (state) => state.samplesReducer,
+  ) as SamplesState
   const containerRef = useRef<HTMLElement | null>(null)
-  const [mode, setMode] = useState<string>(samples[0].id)
-  const [sampleProps, setSampleProps] = useState<any>(
-    samples.find((sample) => sample.id === mode)!.props,
-  )
-
-  useEffect(() => {
-    const newSampleProps = samples.find((sample) => sample.id === mode)!.props
-    setSampleProps(newSampleProps)
-  }, [mode])
 
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.innerHTML = ''
-      new Builder(sampleProps, containerRef.current).execute()
+      new Builder(selectedSample.props, containerRef.current).execute()
     }
-  }, [containerRef, sampleProps])
+  }, [containerRef, selectedSample])
+
+  const handleSampleSelectChanges: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
+    dispatch(changeSelectedSample(e.target.value))
+  }
 
   return (
     <div className="container">
       <section className="card-container input">
         <Card className="card scrollbar vertical">
           <SelectBlock
-            value={mode}
-            onChange={(e) => setMode(e.target.value)}
+            value={selectedSample.id}
+            onChange={handleSampleSelectChanges}
             className="select"
             options={samplesToOptions(samples)}
           />
-          <SamplePresenter props={sampleProps} className="sample-presenter" />
+          <SamplePresenter
+            props={selectedSample.props}
+            className="sample-presenter"
+          />
         </Card>
       </section>
       <section className="card-container result">
