@@ -3,7 +3,7 @@ const isArray = (data: any) => Array.isArray(data)
 const isObject = (data: any) =>
   typeof data === 'object' && !isArray(data) && data !== null
 
-export class Builder {
+export class Json2Html {
   ClassNames = {
     Value: {
       Base: 'value',

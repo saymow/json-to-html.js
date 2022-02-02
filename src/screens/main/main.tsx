@@ -5,7 +5,7 @@ import SamplePresenter from '../../components/sample-presenter/sample-presenter'
 import SelectBlock, {
   SelectOptionsProps
 } from '../../components/select-block/select-block'
-import { Builder } from '../../helpers/builder'
+import { Json2Html } from '../../helpers/json2html'
 import { Sample } from '../../models/sample'
 import { GlobalState } from '../../store'
 import { changeSelectedSample } from '../../store/actions'
@@ -30,7 +30,7 @@ const Main: React.FC = () => {
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.innerHTML = ''
-      new Builder(selectedSample.props, containerRef.current).execute()
+      new Json2Html(selectedSample.props, containerRef.current).execute()
     }
   }, [containerRef, selectedSample])
 
