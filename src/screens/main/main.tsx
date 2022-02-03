@@ -5,7 +5,7 @@ import SamplePresenter from '../../components/sample-presenter/sample-presenter'
 import SelectBlock, {
   SelectOptionsProps
 } from '../../components/select-block/select-block'
-import { Json2Html } from '../../helpers/json2html'
+import { Json2Html } from 'json2html'
 import { Sample } from '../../models/sample'
 import { GlobalState } from '../../store'
 import { changeSelectedSample } from '../../store/actions'

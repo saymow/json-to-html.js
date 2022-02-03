@@ -27,10 +27,6 @@ export class Json2Html {
     },
   }
 
-  /**
-   * @param  {any} data
-   * @param  {HTMLElement} containerEl
-   */
   constructor(
     private readonly data: any,
     private readonly containerEl: HTMLElement
