@@ -1,4 +1,31 @@
+.select-block {
+  display: flex;
+}
+
+.select-block.primary {
+  flex-direction: column;
+}
+
+.select-block.secondary {
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.select-block.secondary label {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
 .select {
   padding: 5px;
-  background: var(--bg-color-tertiary)
+  background: var(--bg-color-tertiary);
+}
+
+.select.primary {
+  margin: 5px 0;
+}
+
+.select.secondary {
+  flex: 1;
+  font-size: 20px;
 }

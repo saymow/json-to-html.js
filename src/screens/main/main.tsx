@@ -43,9 +43,11 @@ const Main: React.FC = () => {
       <section className="card-container input">
         <Card className="card scrollbar vertical">
           <SelectBlock
+            id="mode-selector"
+            title="Preset:"
             value={selectedSample.id}
             onChange={handleSampleSelectChanges}
-            className="select"
+            variant="secondary"
             options={samplesToOptions(samples)}
           />
           <SamplePresenter

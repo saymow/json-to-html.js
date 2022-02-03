@@ -7,21 +7,34 @@ import './select-block.css'
 
 export type SelectOptionsProps = (SelectOptionProps & { key: any })[]
 
-interface Props
-  extends React.DetailedHTMLProps<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
-    HTMLSelectElement
-  > {
+type Variant = 'primary' | 'secondary'
+
+interface Props {
+  id: string
+  title?: string
+  value: string
+  onChange: React.ChangeEventHandler<HTMLSelectElement>
+  variant?: Variant
   options: SelectOptionsProps
 }
 
-const SelectBlock: React.FC<Props> = ({ options, className, ...props }) => {
+const SelectBlock: React.FC<Props> = (props) => {
+  const { id, title, options, variant = 'primary', onChange, value } = props
+
   return (
-    <select className={cx('select', className)} {...props}>
-      {options.map(({ key, ...optionProps }) => (
-        <SelectOption key={key} {...optionProps} />
-      ))}
-    </select>
+    <div className={cx('select-block', variant)}>
+      <label htmlFor={id}>{title}</label>
+      <select
+        id={id}
+        value={value}
+        onChange={onChange}
+        className={cx('select', variant)}
+      >
+        {options.map(({ key, ...optionProps }) => (
+          <SelectOption key={key} {...optionProps} />
+        ))}
+      </select>
+    </div>
   )
 }
 

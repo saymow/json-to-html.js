@@ -23,11 +23,6 @@
   overflow: auto;
 }
 
-.select {
-  width: 100%;
-  font-size: 20px;
-}
-
 .sample-presenter {
   margin-top: 10px;
 }
@@ -55,7 +50,7 @@
 .section-container .section-header {
   text-align: center;
   padding: 5px;
-  
+
   border-bottom: 1px solid var(--bg-color-primary);
 }
 
