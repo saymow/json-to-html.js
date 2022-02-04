@@ -1,8 +1,9 @@
 import { SampleNode } from "../models/sample"
+import { randomId } from "../utils"
 
 export default [
   {
-    id: 'plain-primitives-array',
+    id: randomId(),
     name: 'Plain array of primitives',
     props: [
       'Clean Architecture',
@@ -15,7 +16,7 @@ export default [
     ]
   },
   {
-    id: 'plain-objects-array',
+    id: randomId(),
     name: "Plain objects array",
     props: [
       {
@@ -49,7 +50,7 @@ export default [
     ]
   },
   {
-    id: 'plain-object',
+    id: randomId(),
     name: 'Plain object',
     props: {
       name: 'Gustavo',
@@ -59,7 +60,7 @@ export default [
     }
   },
   {
-    id: 'object-array',
+    id: randomId(),
     name: "Object containing array",
     props: {
       name: 'Gustavo',
@@ -78,7 +79,7 @@ export default [
     }
   },
   {
-    id: 'object-object',
+    id: randomId(),
     name: 'Object containing object',
     props: {
       name: 'Gustavo',
@@ -93,7 +94,7 @@ export default [
     }
   },
   {
-    id: 'complex-1',
+    id: randomId(),
     name: "Complex 1",
     props: [
       {
