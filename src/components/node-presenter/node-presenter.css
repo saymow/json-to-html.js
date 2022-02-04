@@ -1,5 +1,13 @@
 .node-presenter {
+  position: relative;
+
   background: var(--bg-color-primary);
   padding: 10px;
   white-space: pre-wrap;
+}
+
+.error-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }

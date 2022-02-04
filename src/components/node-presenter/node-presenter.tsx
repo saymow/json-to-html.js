@@ -1,6 +1,7 @@
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import cx from 'classnames'
 import './node-presenter.css'
+import ErrorIcon from '../error-icon/error-icon'
 
 interface Props {
   onChange: (data: any) => void
@@ -8,15 +9,24 @@ interface Props {
   className?: string
 }
 
+const invalidJSONMessage = (details: string) => `Invalid JSON: ${details}`
+
 const NodePresenter: React.FC<Props> = ({ props, onChange, className }) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    setErrorMessage(null)
+  }, [props])
+
   function handleChanges(e: FormEvent<HTMLDivElement>) {
     try {
-      const stringifiedJSON = e.currentTarget.textContent ?? ""
+      const stringifiedJSON = e.currentTarget.textContent ?? ''
       const parsedJSON = JSON.parse(stringifiedJSON)
 
+      setErrorMessage(null)
       onChange(parsedJSON)
-    } catch (err) {
-      console.error('Invalid json: ' + err)
+    } catch (err: any) {
+      setErrorMessage(invalidJSONMessage(err.message))
     }
   }
 
@@ -28,6 +38,7 @@ const NodePresenter: React.FC<Props> = ({ props, onChange, className }) => {
       className={cx('node-presenter', className)}
     >
       {JSON.stringify(props, null, 2)}
+      {errorMessage && <ErrorIcon className="error-icon" message={errorMessage} />}
     </div>
   )
 }
