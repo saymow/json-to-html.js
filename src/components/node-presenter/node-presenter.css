@@ -6,6 +6,10 @@
   white-space: pre-wrap;
 }
 
+.content-editable {
+  outline: 0;
+}
+
 .error-icon {
   position: absolute;
   top: 5px;
