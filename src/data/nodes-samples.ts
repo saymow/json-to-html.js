@@ -1,11 +1,6 @@
-import { Sample } from "../models/sample"
+import { SampleNode } from "../models/sample"
 
 export default [
-  {
-    id: 'plain-txt',
-    name: "Plain text",
-    props: 'foo'
-  },
   {
     id: 'plain-primitives-array',
     name: 'Plain array of primitives',
@@ -216,4 +211,4 @@ export default [
       }
     ]
   }
-] as Sample[]
+] as SampleNode[]

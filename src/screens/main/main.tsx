@@ -1,18 +1,20 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Card from '../../components/card/card'
-import SamplePresenter from '../../components/sample-presenter/sample-presenter'
+import NodePresenter from '../../components/node-presenter/node-presenter'
 import SelectBlock, {
-  SelectOptionsProps
+  SelectOptionsProps,
 } from '../../components/select-block/select-block'
 import { Json2Html } from 'json2html'
-import { Sample } from '../../models/sample'
+import { SampleNode } from '../../models/sample'
 import { GlobalState } from '../../store'
-import { changeSelectedSample } from '../../store/actions'
-import { SamplesState } from '../../store/reducers/samplesReducer'
+import * as nodesSamplesActions from '../../store/actions/nodesSamplesActions'
+import { NodesSamples } from '../../store/reducers/nodesSamplesReducer'
 import './main.css'
 
-const samplesToOptions = (sampleList: Sample[]): SelectOptionsProps => {
+const nodesSamplesToOptions = (
+  sampleList: SampleNode[],
+): SelectOptionsProps => {
   return sampleList.map(({ id, name }) => ({
     key: id,
     value: id,
@@ -22,20 +24,33 @@ const samplesToOptions = (sampleList: Sample[]): SelectOptionsProps => {
 
 const Main: React.FC = () => {
   const dispatch = useDispatch()
-  const { samples, selectedSample } = useSelector<GlobalState>(
-    (state) => state.samplesReducer,
-  ) as SamplesState
   const containerRef = useRef<HTMLElement | null>(null)
+  const { nodesSamples, selectedNodeSample } = useSelector<GlobalState>(
+    (state) => state.nodesSamplesReducer,
+  ) as NodesSamples.State
+  const [activeNode, setActiveNode] = useState<SampleNode>(selectedNodeSample)
 
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.innerHTML = ''
-      new Json2Html(selectedSample.props, containerRef.current).execute()
+      new Json2Html(selectedNodeSample.props, containerRef.current).execute()
     }
-  }, [containerRef, selectedSample])
+  }, [containerRef, selectedNodeSample])
 
-  const handleSampleSelectChanges: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    dispatch(changeSelectedSample(e.target.value))
+  useEffect(() => {
+    if (activeNode.id !== selectedNodeSample.id) {
+      setActiveNode(selectedNodeSample)
+    }
+  }, [activeNode, selectedNodeSample])
+
+  const handleNodeSampleSelectChanges: React.ChangeEventHandler<HTMLSelectElement> = (
+    e,
+  ) => {
+    dispatch(nodesSamplesActions.select(e.target.value))
+  }
+
+  const handleUpdateSelectedNodeSample = (props: any) => {
+    dispatch(nodesSamplesActions.update(selectedNodeSample.id, props))
   }
 
   return (
@@ -45,14 +60,15 @@ const Main: React.FC = () => {
           <SelectBlock
             id="mode-selector"
             title="Preset:"
-            value={selectedSample.id}
-            onChange={handleSampleSelectChanges}
+            value={activeNode.id}
+            onChange={handleNodeSampleSelectChanges}
             variant="secondary"
-            options={samplesToOptions(samples)}
+            options={nodesSamplesToOptions(nodesSamples)}
           />
-          <SamplePresenter
-            props={selectedSample.props}
-            className="sample-presenter"
+          <NodePresenter
+            onChange={handleUpdateSelectedNodeSample}
+            props={activeNode.props}
+            className="node-presenter"
           />
         </Card>
       </section>
