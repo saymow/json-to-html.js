@@ -1,4 +1,4 @@
-import { SampleNode } from "../models/sample"
+import { BaseNode } from "../models/node"
 import { randomId } from "../utils"
 
 export default [
@@ -210,6 +210,6 @@ export default [
         "createdAt": "2013-11-04T14:26:09.659Z",
         "updatedAt": "2013-11-05T14:26:09.659Z"
       }
-    ]
+    ],
   }
-] as SampleNode[]
+] as BaseNode[]

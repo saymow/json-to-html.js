@@ -1,19 +1,20 @@
+import { Json2Html } from 'json2html'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Card from '../../components/card/card'
 import NodePresenter from '../../components/node-presenter/node-presenter'
 import SelectBlock, {
-  SelectOptionsProps,
+  SelectOptionsProps
 } from '../../components/select-block/select-block'
-import { Json2Html } from 'json2html'
-import { SampleNode } from '../../models/sample'
+import { CustomNode } from '../../models/node'
 import { GlobalState } from '../../store'
-import * as nodesSamplesActions from '../../store/actions/nodesSamplesActions'
-import { NodesSamples } from '../../store/reducers/nodesSamplesReducer'
+import * as nodesActions from '../../store/actions/nodesActions'
+import { Nodes } from '../../store/reducers/nodesReducer'
+import { instanceOfCustomNode } from '../../utils'
 import './main.css'
 
 const nodesSamplesToOptions = (
-  sampleList: SampleNode[],
+  sampleList: Nodes.Node[],
 ): SelectOptionsProps => {
   return sampleList.map(({ id, name }) => ({
     key: id,
@@ -25,32 +26,39 @@ const nodesSamplesToOptions = (
 const Main: React.FC = () => {
   const dispatch = useDispatch()
   const containerRef = useRef<HTMLElement | null>(null)
-  const { nodesSamples, selectedNodeSample } = useSelector<GlobalState>(
-    (state) => state.nodesSamplesReducer,
-  ) as NodesSamples.State
-  const [activeNode, setActiveNode] = useState<SampleNode>(selectedNodeSample)
+  const { nodes, selectedNode } = useSelector<GlobalState>(
+    (state) => state.nodesReducer,
+  ) as Nodes.State
+  const [currentProps, setCurrentProps] = useState<any>(selectedNode.props)
+  const [toSaveProps, setToSaveProps] = useState<any>(selectedNode.props)
 
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.innerHTML = ''
-      new Json2Html(selectedNodeSample.props, containerRef.current).execute()
-    }
-  }, [containerRef, selectedNodeSample])
+    setCurrentProps(selectedNode.props)
+    setToSaveProps(selectedNode.props)
+  }, [selectedNode])
 
   useEffect(() => {
-    if (activeNode.id !== selectedNodeSample.id) {
-      setActiveNode(selectedNodeSample)
-    }
-  }, [activeNode, selectedNodeSample])
+    containerRef.current!.innerHTML = ''
+    new Json2Html(toSaveProps, containerRef.current).execute()
+  }, [toSaveProps])
 
   const handleNodeSampleSelectChanges: React.ChangeEventHandler<HTMLSelectElement> = (
     e,
   ) => {
-    dispatch(nodesSamplesActions.select(e.target.value))
+    dispatch(nodesActions.update(selectedNode.id, toSaveProps))
+    dispatch(nodesActions.select(e.target.value))
+  }
+
+  const handleUpsertEditableNode = () => {
+    dispatch(nodesActions.upsertCustomNode(selectedNode.id))
   }
 
   const handleUpdateSelectedNodeSample = (props: any) => {
-    dispatch(nodesSamplesActions.update(selectedNodeSample.id, props))
+    setToSaveProps(props)
+  }
+
+  const handleRestoreCustomNode = () => {
+    dispatch(nodesActions.restoreCustomNode())
   }
 
   return (
@@ -60,14 +68,22 @@ const Main: React.FC = () => {
           <SelectBlock
             id="mode-selector"
             title="Preset:"
-            value={activeNode.id}
+            value={selectedNode.id}
             onChange={handleNodeSampleSelectChanges}
             variant="secondary"
-            options={nodesSamplesToOptions(nodesSamples)}
+            options={nodesSamplesToOptions(nodes)}
           />
           <NodePresenter
+            readonly={!instanceOfCustomNode(selectedNode)}
+            onTryEdit={handleUpsertEditableNode}
+            onRestore={handleRestoreCustomNode}
             onChange={handleUpdateSelectedNodeSample}
-            props={activeNode.props}
+            baseProps={
+              instanceOfCustomNode(selectedNode)
+                ? (selectedNode as CustomNode).baseProps
+                : selectedNode.props
+            }
+            props={currentProps}
             className="node-presenter"
           />
         </Card>

@@ -2,16 +2,56 @@
   position: relative;
 
   background: var(--bg-color-primary);
-  padding: 10px;
   white-space: pre-wrap;
 }
 
-.content-editable {
-  outline: 0;
+.actions-container {
+  width: 100%;
 }
 
-.error-icon {
+.actions-container ul {
+  width: 100%;
+
+  list-style: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.action-item {
+  cursor: pointer;
+  position: relative;
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-item[data-disabled=true] {
+  cursor: default;
+  opacity: .6;
+}
+
+.action-item:not([data-disabled=true])[data-message]::after {
+  display: none;
+  font-size: 12px;
+  content: attr(data-message);
+
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 100%;
+
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.action-item[data-message]:hover::after {
+  display: block;
+}
+
+.content {
+  padding: 10px;
+  outline: 0;
 }

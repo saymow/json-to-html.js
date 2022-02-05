@@ -6,15 +6,17 @@ import './error-icon.css'
 interface Props {
   message?: string
   className?: string
+  size?: string | number
+  fill?: string
 }
 
-const ErrorIcon: React.FC<Props> = ({ message, className }) => {
+const ErrorIcon: React.FC<Props> = ({ message, className, size, fill }) => {
   return (
     <span
       className={cx('error-icon-box', className, { tooltip: message })}
       data-message={message}
     >
-      <ErrorCircle size="26" fill="red" />
+      <ErrorCircle size={size} fill={fill} />
     </span>
   )
 }
