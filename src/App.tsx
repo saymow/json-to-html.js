@@ -1,11 +1,20 @@
 import './App.css'
 import Main from './screens/main/main'
 import { Provider } from 'react-redux'
+import GithubCorner from 'react-github-corner'
 import store from './store'
+import { env } from './config/env'
 
 function App() {
   return (
     <Provider store={store}>
+      <GithubCorner
+        href={env.GITHUB_URL}
+        bannerColor="#000"
+        octoColor="#fff"
+        size={80}
+        direction="right"
+      />
       <Main />
     </Provider>
   )
