@@ -10,8 +10,8 @@ function App() {
     <Provider store={store}>
       <GithubCorner
         href={env.GITHUB_URL}
-        bannerColor="#000"
-        octoColor="#fff"
+        bannerColor="var(--bg-color-primary)"
+        octoColor="var(--font-color)"
         size={80}
         direction="right"
       />
