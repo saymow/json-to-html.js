@@ -1,9 +1,8 @@
 {
-  "name": "json2html",
+  "name": "json2html-playground",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "json2html": "../dist",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
