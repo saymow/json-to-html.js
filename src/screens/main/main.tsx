@@ -1,10 +1,10 @@
-import { Json2Html } from 'json2html'
+import Json2HtmlBuilder from 'json2html'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Card from '../../components/card/card'
 import NodePresenter from '../../components/node-presenter/node-presenter'
 import SelectBlock, {
-  SelectOptionsProps
+  SelectOptionsProps,
 } from '../../components/select-block/select-block'
 import { CustomNode } from '../../models/node'
 import { GlobalState } from '../../store'
@@ -38,8 +38,10 @@ const Main: React.FC = () => {
   }, [selectedNode])
 
   useEffect(() => {
-    containerRef.current!.innerHTML = ''
-    new Json2Html(toSaveProps, containerRef.current).execute()
+    if (containerRef.current) {
+      containerRef.current!.innerHTML = ''
+      new Json2HtmlBuilder(toSaveProps, containerRef.current).build().execute()
+    }
   }, [toSaveProps])
 
   const handleNodeSampleSelectChanges: React.ChangeEventHandler<HTMLSelectElement> = (
