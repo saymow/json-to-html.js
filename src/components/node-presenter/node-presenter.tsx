@@ -38,6 +38,12 @@ const NodePresenter: React.FC<Props> = (props) => {
   )
 
   useEffect(() => {
+    if (!readonly && contentEditableRef.current) {
+      contentEditableRef.current.focus()
+    }
+  }, [readonly])
+  
+  useEffect(() => {
     setErrorMessage(null)
     setEditedText(toFormattedJSON(nodeProps))
   }, [nodeProps])
@@ -59,7 +65,9 @@ const NodePresenter: React.FC<Props> = (props) => {
   }
 
   function handleRestore() {
-    contentEditableRef.current!.innerText = toFormattedJSON(baseNodeProps)
+    if (contentEditableRef.current) {
+      contentEditableRef.current.innerText = toFormattedJSON(baseNodeProps)
+    }
     setEditedText(toFormattedJSON(baseNodeProps))
     onRestore?.()
   }
