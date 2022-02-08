@@ -21,12 +21,14 @@
     "dev": "concurrently \"npm run build:watch\" \"npm run start:playground\"",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:watch": "npm run test -- --watch",
+    "test:staged": "npm run test -- --findRelatedTests",
     "build": "tsc --project tsconfig-build.json",
     "build:watch": "tsc -w --project tsconfig-build.json",
     "prebuild:playground": "npm run build",
     "build:playground": "cd playground && npm run build",
     "install:playground": "cd playground && npm install",
-    "start:playground": "cd playground && npm start"
+    "start:playground": "cd playground && npm start",
+    "prepare": "husky install"
   },
   "author": "Gustavo Alves",
   "license": "ISC",
@@ -35,7 +37,9 @@
     "concurrently": "^7.0.0",
     "eslint": "^7.32.0",
     "eslint-config-standard-with-typescript": "^21.0.1",
+    "husky": "^7.0.0",
     "jest": "^27.5.1",
+    "lint-staged": "^12.3.3",
     "ts-jest": "^27.1.3",
     "typescript": "^4.5.5"
   }
