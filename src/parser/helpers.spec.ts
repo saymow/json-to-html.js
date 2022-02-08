@@ -24,7 +24,11 @@ describe('Helpers', () => {
     })
 
     it('should return true for Symbol', () => {
-      expect(isPrimitive(Symbol(faker.random.word())))
+      expect(isPrimitive(Symbol(faker.random.word()))).toBeTruthy()
+    })
+
+    it('should return false for Array', () => {
+      expect(isPrimitive([faker.random.word(), faker.random.number()])).toBeFalsy()
     })
   })
 })
