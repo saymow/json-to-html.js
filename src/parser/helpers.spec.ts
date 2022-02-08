@@ -18,5 +18,9 @@ describe('Helpers', () => {
     it('should return true for undefined', () => {
       expect(isPrimitive(undefined))
     })
+
+    it('should return true for date', () => {
+      expect(isPrimitive(faker.date))
+    })
   })
 })
