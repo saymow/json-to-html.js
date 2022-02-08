@@ -4,6 +4,7 @@ export class ElementsFactorySpy implements IElementsFactory {
   createSectionHeaderPlainText!: string
   createFieldKey!: string
   createFieldValue!: string
+  createValueValue!: string
 
   createSection (): HTMLElement {
     return this.randomHtmlElement()
@@ -25,7 +26,7 @@ export class ElementsFactorySpy implements IElementsFactory {
   }
 
   createValue (value: any): HTMLElement {
-    this.createFieldValue = value
+    this.createValueValue = value
     return this.randomHtmlElement()
   }
 
