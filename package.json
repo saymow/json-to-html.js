@@ -7,6 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/saymow/json2html"
   },
+  "keywords": ["JSON-TO-HTML", "JSON", "HTML", "JavaScript", "TypeScript", "Transpiler", "Builder", "Parser"],
   "scripts": {
     "dev": "concurrently \"npm run build:watch\" \"npm run start:playground\"", 
     "build": "tsc",
