@@ -8,6 +8,7 @@
     "url": "git+https://github.com/saymow/json2html"
   },
   "scripts": {
+    "dev": "concurrently \"npm run build:watch\" \"npm run start:playground\"", 
     "build": "tsc",
     "build:watch": "tsc -w",
     "prebuild:playground": "npm run build",
@@ -18,6 +19,7 @@
   "author": "Gustavo Alves",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^7.0.0",
     "typescript": "^4.5.5"
   }
 }
