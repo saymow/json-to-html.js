@@ -4,7 +4,7 @@ import { IElementsFactory } from './parser-elements-factory/protocols'
 import { Parser } from './parser/parser'
 
 export default class JsonToHtmlBuilder {
-  private elementsFactory: IElementsFactory = new DefaultElementsFactory()
+  private readonly elementsFactory: IElementsFactory = new DefaultElementsFactory()
 
   constructor (
     private readonly data: any,
