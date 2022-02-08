@@ -1,13 +1,13 @@
 export interface IParserElementsFactory {
-  createArraySection(title: string): HTMLElement
+  createArraySection: (title: string) => HTMLElement
 
-  createObjectSection(title: string): HTMLElement
+  createObjectSection: (title: string) => HTMLElement
 
-  createArrayContainer(): HTMLElement
+  createArrayContainer: () => HTMLElement
 
-  createObjectContainer(): HTMLElement
+  createObjectContainer: () => HTMLElement
 
-  createField(key: string, value: any): HTMLElement
+  createField: (key: string, value: any) => HTMLElement
 
-  createValue(value: any): HTMLElement
+  createValue: (value: any) => HTMLElement
 }

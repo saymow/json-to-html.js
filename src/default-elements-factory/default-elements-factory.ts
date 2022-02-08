@@ -1,26 +1,26 @@
-import { IElementsFactory } from "../parser-elements-factory/protocols";
+import { IElementsFactory } from '../parser-elements-factory/protocols'
 
 export class DefaultElementsFactory implements IElementsFactory {
   ClassNames = {
     Value: {
-      Base: 'value',
+      Base: 'value'
     },
     Field: {
       Base: 'field-container',
-      Key: 'key',
+      Key: 'key'
     },
     Container: {
-      Base: 'base-container',
+      Base: 'base-container'
     },
     Section: {
       Header: {
-        Base: 'section-header',
+        Base: 'section-header'
       },
-      Base: 'section-container',
-    },
+      Base: 'section-container'
+    }
   }
 
-  createSection(): HTMLElement {
+  createSection (): HTMLElement {
     const sectionEl = document.createElement('section')
 
     sectionEl.classList.add(this.ClassNames.Section.Base)
@@ -28,7 +28,7 @@ export class DefaultElementsFactory implements IElementsFactory {
     return sectionEl
   }
 
-  createContainer(): HTMLElement {
+  createContainer (): HTMLElement {
     const articleEl = document.createElement('article')
 
     articleEl.classList.add(this.ClassNames.Container.Base)
@@ -36,7 +36,7 @@ export class DefaultElementsFactory implements IElementsFactory {
     return articleEl
   }
 
-  createSectionHeader(title: string): HTMLElement {
+  createSectionHeader (title: string): HTMLElement {
     const headerEl = document.createElement('header')
     const titleEl = document.createElement('h2')
 
@@ -47,7 +47,7 @@ export class DefaultElementsFactory implements IElementsFactory {
     return headerEl
   }
 
-  createField(key: string, value: any): HTMLElement {
+  createField (key: string, value: any): HTMLElement {
     const containerEl = document.createElement('div')
     const keyEl = document.createElement('p')
     const valueEl = this.createValue(value)
@@ -63,7 +63,7 @@ export class DefaultElementsFactory implements IElementsFactory {
     return containerEl
   }
 
-  createValue(value: any): HTMLElement {
+  createValue (value: any): HTMLElement {
     const valueEl = document.createElement('p')
 
     valueEl.textContent = value

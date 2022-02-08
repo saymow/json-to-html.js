@@ -2,17 +2,17 @@ import { isArray, isObject, isPrimitive } from './helpers'
 import { IParserElementsFactory } from './protocols'
 
 export class Parser {
-  constructor(
+  constructor (
     private readonly data: any,
     private readonly containerEl: HTMLElement,
     private readonly elementsFactory: IParserElementsFactory
   ) { }
 
-  execute() {
+  execute (): void {
     this.executeHelper(this.data, this.containerEl)
   }
 
-  private executeHelper(data: any, containerEl: HTMLElement) {
+  private executeHelper (data: any, containerEl: HTMLElement): void {
     if (isObject(data)) {
       this.objectExecution(data, containerEl)
     } else if (isArray(data)) {
@@ -22,7 +22,7 @@ export class Parser {
     }
   }
 
-  private objectExecution(data: any, containerEl: HTMLElement) {
+  private objectExecution (data: any, containerEl: HTMLElement): void {
     const objectContainer = this.elementsFactory.createObjectContainer()
 
     Object.entries(data).forEach((entry) => {
@@ -46,7 +46,7 @@ export class Parser {
     containerEl.appendChild(objectContainer)
   }
 
-  private arrayExecution(data: any, containerEl: HTMLElement) {
+  private arrayExecution (data: any, containerEl: HTMLElement): void {
     const arrayContainer = this.elementsFactory.createArrayContainer()
 
     for (const value of data) {
@@ -56,7 +56,7 @@ export class Parser {
     containerEl.appendChild(arrayContainer)
   }
 
-  private primitiveExecution(data: any, containerEl: HTMLElement) {
+  private primitiveExecution (data: any, containerEl: HTMLElement): void {
     containerEl.appendChild(this.elementsFactory.createValue(data))
   }
 }
