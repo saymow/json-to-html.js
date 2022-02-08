@@ -14,5 +14,9 @@ describe('Helpers', () => {
     it('should return true for null', () => {
       expect(isPrimitive(null))
     })
+
+    it('should return true for undefined', () => {
+      expect(isPrimitive(undefined))
+    })
   })
 })
