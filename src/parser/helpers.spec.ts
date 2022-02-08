@@ -4,23 +4,27 @@ import faker from 'faker'
 describe('Helpers', () => {
   describe('isPrimitive', () => {
     it('should return true for string', () => {
-      expect(isPrimitive(faker.random.word()))
+      expect(isPrimitive(faker.random.word())).toBeTruthy()
     })
 
     it('should return true for number', () => {
-      expect(isPrimitive(faker.random.number()))
+      expect(isPrimitive(faker.random.number())).toBeTruthy()
     })
 
     it('should return true for null', () => {
-      expect(isPrimitive(null))
+      expect(isPrimitive(null)).toBeTruthy()
     })
 
     it('should return true for undefined', () => {
-      expect(isPrimitive(undefined))
+      expect(isPrimitive(undefined)).toBeTruthy()
     })
 
     it('should return true for date', () => {
-      expect(isPrimitive(faker.date))
+      expect(isPrimitive(new Date())).toBeTruthy()
+    })
+
+    it('should return true for Symbol', () => {
+      expect(isPrimitive(Symbol(faker.random.word())))
     })
   })
 })

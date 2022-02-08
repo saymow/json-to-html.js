@@ -1,4 +1,4 @@
-export const isPrimitive = (data: any): boolean => data !== Object(data)
+export const isPrimitive = (data: any): boolean => data !== Object(data) || data instanceof Date
 
 export const isArray = (data: any): boolean => Array.isArray(data)
 
