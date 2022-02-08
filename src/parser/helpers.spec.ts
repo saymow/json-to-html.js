@@ -38,5 +38,9 @@ describe('Helpers', () => {
         [faker.random.word()]: faker.random.number()
       })).toBeFalsy()
     })
+
+    it('should return false for Function', () => {
+      expect(isPrimitive(() => {})).toBeFalsy()
+    })
   })
 })
