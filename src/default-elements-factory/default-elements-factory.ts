@@ -28,6 +28,14 @@ export class DefaultElementsFactory implements IElementsFactory {
     return sectionEl
   }
 
+  createContainer(): HTMLElement {
+    const articleEl = document.createElement('article')
+
+    articleEl.classList.add(this.ClassNames.Container.Base)
+
+    return articleEl
+  }
+
   createSectionHeader(title: string): HTMLElement {
     const headerEl = document.createElement('header')
     const titleEl = document.createElement('h2')
@@ -37,14 +45,6 @@ export class DefaultElementsFactory implements IElementsFactory {
     headerEl.appendChild(titleEl)
 
     return headerEl
-  }
-
-  createContainer(): HTMLElement {
-    const articleEl = document.createElement('article')
-
-    articleEl.classList.add(this.ClassNames.Container.Base)
-
-    return articleEl
   }
 
   createField(key: string, value: any): HTMLElement {

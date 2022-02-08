@@ -14,4 +14,14 @@ describe('DefaultElementsFactory', () => {
       expect(Array.from(element.classList)).toEqual(['section-container'])
     })
   })
+  
+  describe("createContainer()", () => {
+    it('Should create a valid container element', () => {
+      const sut = makeSut()
+      const element = sut.createContainer()
+
+      expect(element.tagName.toLowerCase()).toEqual('article')
+      expect(Array.from(element.classList)).toEqual(['base-container'])
+    })
+  })
 })

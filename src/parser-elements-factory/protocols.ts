@@ -1,9 +1,9 @@
 export interface IElementsFactory {
   createSection(): HTMLElement
   
-  createSectionHeader(title: string): HTMLElement
-
   createContainer(): HTMLElement
+  
+  createSectionHeader(title: string): HTMLElement
 
   createField(key: string, value: any): HTMLElement
 
