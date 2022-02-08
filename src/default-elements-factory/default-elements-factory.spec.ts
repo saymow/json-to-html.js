@@ -1,4 +1,5 @@
 import { DefaultElementsFactory } from './default-elements-factory'
+import faker from 'faker'
 
 const makeSut = (): DefaultElementsFactory => {
   return new DefaultElementsFactory()
@@ -28,7 +29,7 @@ describe('DefaultElementsFactory', () => {
   describe('createSectionHeader()', () => {
     it('Should create a valid sectionHeader element', () => {
       const sut = makeSut()
-      const title = 'some-title'
+      const title = faker.random.words()
       const header = sut.createSectionHeader(title)
       const headerTitle = header.querySelector('h2')
 
@@ -42,8 +43,8 @@ describe('DefaultElementsFactory', () => {
   describe('createField()', () => {
     it('Should create a valid field element', () => {
       const sut = makeSut()
-      const key = 'some-key'
-      const value = 'some-value'
+      const key = faker.random.word()
+      const value = faker.random.word()
       const field = sut.createField(key, value)
       const fieldKey = field.querySelector('.key')
       const fieldValue = field.querySelector('.value')
@@ -64,10 +65,11 @@ describe('DefaultElementsFactory', () => {
   describe('createValue()', () => {
     it('Should create a valid value element', () => {
       const sut = makeSut()
-      const value = sut.createValue('some-value')
+      const text = faker.random.word()
+      const value = sut.createValue(text)
 
       expect(value.tagName.toLowerCase()).toEqual('p')
-      expect(value.textContent).toEqual('some-value')
+      expect(value.textContent).toEqual(text)
     })
   })
 })
