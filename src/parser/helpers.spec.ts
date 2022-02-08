@@ -19,7 +19,7 @@ describe('Helpers', () => {
       expect(isPrimitive(undefined)).toBeTruthy()
     })
 
-    it('should return true for date', () => {
+    it('should return true for Date', () => {
       expect(isPrimitive(new Date())).toBeTruthy()
     })
 
@@ -29,6 +29,14 @@ describe('Helpers', () => {
 
     it('should return false for Array', () => {
       expect(isPrimitive([faker.random.word(), faker.random.number()])).toBeFalsy()
+    })
+
+    it('should return false for Object', () => {
+      expect(isPrimitive({
+        [faker.random.word()]: faker.random.number(),
+        [faker.random.word()]: faker.random.number(),
+        [faker.random.word()]: faker.random.number()
+      })).toBeFalsy()
     })
   })
 })
