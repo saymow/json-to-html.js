@@ -32,5 +32,14 @@ describe('ParserElementsFactory', () => {
 
       expect(elementsFactorySpy.createSectionHeaderPlainText).toBe(title)
     })
+
+    it('Should create a valid arraySection', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const arraySection = sut.createArraySection(faker.random.word())
+
+      expect(arraySection).toBe(elementsFactorySpy.createSectionResult)
+      expect(Array.from(arraySection.classList).includes('array')).toBeTruthy()
+      expect(arraySection.contains(elementsFactorySpy.createSectionHeaderResult)).toBeTruthy()
+    })
   })
 })
