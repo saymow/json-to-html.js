@@ -10,5 +10,9 @@ describe('Helpers', () => {
     it('should return true for number', () => {
       expect(isPrimitive(faker.random.number()))
     })
+
+    it('should return true for null', () => {
+      expect(isPrimitive(null))
+    })
   })
 })
