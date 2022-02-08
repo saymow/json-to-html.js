@@ -6,5 +6,9 @@ describe('Helpers', () => {
     it('should return true for string', () => {
       expect(isPrimitive(faker.random.word()))
     })
+
+    it('should return true for number', () => {
+      expect(isPrimitive(faker.random.number()))
+    })
   })
 })
