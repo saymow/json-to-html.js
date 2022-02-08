@@ -38,4 +38,26 @@ describe('DefaultElementsFactory', () => {
       expect(headerTitle!.textContent).toBe(title)
     })
   })
+
+  describe("createField()", () => {
+    it('Should create a valid field element', () => {
+      const sut = makeSut()
+      const key = "some-key"
+      const value = "some-value"
+      const field = sut.createField(key, value)
+      const fieldKey = field.querySelector('.key') 
+      const fieldValue = field.querySelector('.value') 
+
+      expect(field.tagName.toLowerCase()).toEqual('div')
+      expect(Array.from(field.classList)).toEqual(['field-container'])
+      
+      expect(fieldKey).toBeDefined()
+      expect(fieldKey!.tagName.toLowerCase()).toEqual('p')
+      expect(fieldKey!.textContent).toEqual(`${key}:`)
+      
+      expect(fieldValue).toBeDefined()
+      expect(fieldValue!.tagName.toLowerCase()).toEqual('p')
+      expect(fieldValue!.textContent).toEqual(value)
+    })
+  })
 })
