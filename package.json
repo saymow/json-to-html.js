@@ -1,5 +1,5 @@
 {
-  "name": "json2html",
+  "name": "json-to-html.js",
   "version": "1.0.0",
   "description": "An application that parses json to a html structure.",
   "main": "dist/index.js",

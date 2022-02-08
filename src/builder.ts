@@ -3,7 +3,7 @@ import { ParserElementsFactory } from "./parser-elements-factory/parser-elements
 import { IElementsFactory } from "./parser-elements-factory/protocols";
 import { Parser } from "./parser/parser";
 
-export default class Json2HtmlBuilder {
+export default class JsonToHtmlBuilder {
   private elementsFactory: IElementsFactory = new DefaultElementsFactory()
 
   constructor(
@@ -11,27 +11,27 @@ export default class Json2HtmlBuilder {
     private readonly containerEl: HTMLElement
   ) { }
 
-  withCreateSectionEl(createSection: IElementsFactory['createSection']): Json2HtmlBuilder {
+  withCreateSectionEl(createSection: IElementsFactory['createSection']): JsonToHtmlBuilder {
     this.elementsFactory.createSection = createSection
     return this
   }
 
-  withCreateSectionHeaderEl(createSectionHeader: IElementsFactory['createSectionHeader']): Json2HtmlBuilder {
+  withCreateSectionHeaderEl(createSectionHeader: IElementsFactory['createSectionHeader']): JsonToHtmlBuilder {
     this.elementsFactory.createSectionHeader = createSectionHeader
     return this
   }
 
-  withCreateContainerEl(createContainer: IElementsFactory['createContainer']): Json2HtmlBuilder {
+  withCreateContainerEl(createContainer: IElementsFactory['createContainer']): JsonToHtmlBuilder {
     this.elementsFactory.createContainer = createContainer
     return this
   }
 
-  withCreateFieldEl(createField: IElementsFactory['createField']): Json2HtmlBuilder {
+  withCreateFieldEl(createField: IElementsFactory['createField']): JsonToHtmlBuilder {
     this.elementsFactory.createField = createField
     return this
   }
 
-  withCreateValueEl(createValue: IElementsFactory['createValue']): Json2HtmlBuilder {
+  withCreateValueEl(createValue: IElementsFactory['createValue']): JsonToHtmlBuilder {
     this.elementsFactory.createValue = createValue
     return this
   }
