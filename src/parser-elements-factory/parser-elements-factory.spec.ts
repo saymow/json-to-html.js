@@ -52,5 +52,13 @@ describe('ParserElementsFactory', () => {
 
       expect(createSectionSpy).toHaveBeenCalledTimes(1)
     })
+
+    it('Should call elementsFactory.createSectionHeader with correct value', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const title = faker.random.word()
+      sut.createObjectSection(title)
+
+      expect(elementsFactorySpy.createSectionHeaderPlainText).toBe(title)
+    })
   })
 })
