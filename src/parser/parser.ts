@@ -17,7 +17,7 @@ export class Parser implements IParser {
     }
   }
 
-  private objectExecution (data: any, containerEl: HTMLElement): void {
+  objectExecution (data: any, containerEl: HTMLElement): void {
     const objectContainer = this.elementsFactory.createObjectContainer()
 
     Object.entries(data).forEach((entry) => {
@@ -41,7 +41,7 @@ export class Parser implements IParser {
     containerEl.appendChild(objectContainer)
   }
 
-  private arrayExecution (data: any, containerEl: HTMLElement): void {
+  arrayExecution (data: any, containerEl: HTMLElement): void {
     const arrayContainer = this.elementsFactory.createArrayContainer()
 
     for (const value of data) {
@@ -51,7 +51,7 @@ export class Parser implements IParser {
     containerEl.appendChild(arrayContainer)
   }
 
-  private primitiveExecution (data: any, containerEl: HTMLElement): void {
+  primitiveExecution (data: any, containerEl: HTMLElement): void {
     containerEl.appendChild(this.elementsFactory.createValue(data))
   }
 }
