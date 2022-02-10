@@ -106,4 +106,16 @@ describe('ParserElementsFactory', () => {
       expect(Array.from(objectContainer.classList).includes('object'))
     })
   })
+
+  describe('createField', () => {
+    it('Should call elementsFactory.createField with correct values', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const key = faker.random.word()
+      const value = faker.random.words()
+      sut.createField(key, value)
+
+      expect(elementsFactorySpy.createFieldKey).toBe(key)
+      expect(elementsFactorySpy.createFieldValue).toBe(value)
+    })
+  })
 })
