@@ -42,4 +42,15 @@ describe('ParserElementsFactory', () => {
       expect(arraySection.contains(elementsFactorySpy.createSectionHeaderResult)).toBeTruthy()
     })
   })
+
+  describe('createObjectSection', () => {
+    it('Should call elementsFactory.createSection once', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const createSectionSpy = jest.spyOn(elementsFactorySpy, 'createSection')
+      const title = faker.random.word()
+      sut.createObjectSection(title)
+
+      expect(createSectionSpy).toHaveBeenCalledTimes(1)
+    })
+  })
 })
