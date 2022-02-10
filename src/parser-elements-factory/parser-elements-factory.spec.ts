@@ -117,5 +117,12 @@ describe('ParserElementsFactory', () => {
       expect(elementsFactorySpy.createFieldKey).toBe(key)
       expect(elementsFactorySpy.createFieldValue).toBe(value)
     })
+
+    it('Should create a valid field', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const field = sut.createField(faker.random.word(), faker.random.words())
+
+      expect(field).toBe(elementsFactorySpy.createFieldResult)
+    })
   })
 })
