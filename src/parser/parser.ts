@@ -1,18 +1,13 @@
 import { isArray, isObject, isPrimitive } from './helpers'
 import { IParserElementsFactory } from './protocols'
+import { IParser } from '../domain/parser'
 
-export class Parser {
+export class Parser implements IParser {
   constructor (
-    private readonly data: any,
-    private readonly containerEl: HTMLElement,
     private readonly elementsFactory: IParserElementsFactory
   ) { }
 
-  execute (): void {
-    this.executeHelper(this.data, this.containerEl)
-  }
-
-  private executeHelper (data: any, containerEl: HTMLElement): void {
+  execute (data: any, containerEl: HTMLElement): void {
     if (isObject(data)) {
       this.objectExecution(data, containerEl)
     } else if (isArray(data)) {
@@ -32,12 +27,12 @@ export class Parser {
         objectContainer.appendChild(this.elementsFactory.createField(key, value))
       } else if (isArray(value)) {
         const arraySectionEl = this.elementsFactory.createArraySection(key)
-        this.executeHelper(value, arraySectionEl)
+        this.execute(value, arraySectionEl)
 
         objectContainer.appendChild(arraySectionEl)
       } else if (isObject(value)) {
         const objectSectionEl = this.elementsFactory.createObjectSection(key)
-        this.executeHelper(value, objectSectionEl)
+        this.execute(value, objectSectionEl)
 
         objectContainer.appendChild(objectSectionEl)
       }
@@ -50,7 +45,7 @@ export class Parser {
     const arrayContainer = this.elementsFactory.createArrayContainer()
 
     for (const value of data) {
-      this.executeHelper(value, arrayContainer)
+      this.execute(value, arrayContainer)
     }
 
     containerEl.appendChild(arrayContainer)

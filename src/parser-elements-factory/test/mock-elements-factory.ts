@@ -1,4 +1,4 @@
-import { IElementsFactory } from './protocols'
+import { IElementsFactory } from '../protocols'
 
 export class ElementsFactorySpy implements IElementsFactory {
   createSectionResult = this.randomHtmlElement()

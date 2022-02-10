@@ -1,4 +1,4 @@
-import { ElementsFactorySpy } from './mock-elements-factory'
+import { ElementsFactorySpy } from './test/mock-elements-factory'
 import { ParserElementsFactory } from './parser-elements-factory'
 import faker from 'faker'
 

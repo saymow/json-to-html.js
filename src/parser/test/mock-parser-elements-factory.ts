@@ -1,4 +1,4 @@
-import { IParserElementsFactory } from './protocols'
+import { IParserElementsFactory } from '../protocols'
 
 export class ParserElementsFactorySpy implements IParserElementsFactory {
   createArraySectionPlainText?: string

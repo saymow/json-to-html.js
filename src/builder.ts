@@ -1,3 +1,4 @@
+import { Json2Html } from './presentation'
 import { DefaultElementsFactory } from './default-elements-factory/default-elements-factory'
 import { ParserElementsFactory } from './parser-elements-factory/parser-elements-factory'
 import { IElementsFactory } from './parser-elements-factory/protocols'
@@ -36,7 +37,7 @@ export default class JsonToHtmlBuilder {
     return this
   }
 
-  build (): Parser {
-    return new Parser(this.data, this.containerEl, new ParserElementsFactory(this.elementsFactory))
+  build (): Json2Html {
+    return new Json2Html(this.data, this.containerEl, new Parser(new ParserElementsFactory(this.elementsFactory)))
   }
 }
