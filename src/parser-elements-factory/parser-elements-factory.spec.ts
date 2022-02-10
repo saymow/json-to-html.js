@@ -97,5 +97,13 @@ describe('ParserElementsFactory', () => {
 
       expect(createContainerSpy).toHaveBeenCalledTimes(1)
     })
+
+    it('Should create a valid objectContainer', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const objectContainer = sut.createObjectContainer()
+
+      expect(objectContainer).toBe(elementsFactorySpy.createContainerResult)
+      expect(Array.from(objectContainer.classList).includes('object'))
+    })
   })
 })
