@@ -97,5 +97,24 @@ describe('Parser', () => {
       expect(arrayExecutionSpy).not.toHaveBeenCalled()
       expect(objectExecutionSpy).not.toHaveBeenCalled()
     })
+
+    it('Should call nothing if and only if isPrimitive, isArray and isObject returns false', () => {
+      const { sut } = makeSut()
+      const primitiveExecutionSpy = jest.spyOn(sut, 'primitiveExecution').mockImplementationOnce(() => { })
+      const arrayExecutionSpy = jest.spyOn(sut, 'arrayExecution').mockImplementationOnce(() => { })
+      const objectExecutionSpy = jest.spyOn(sut, 'objectExecution').mockImplementationOnce(() => { })
+
+      mockIsPrimitive.mockReturnValue(false)
+      mockIsArray.mockReturnValue(false)
+      mockIsObject.mockReturnValue(false)
+
+      const data = makeFakeSimpleData()
+      const containerEl = makeContainerEl()
+      sut.execute(data, containerEl)
+
+      expect(primitiveExecutionSpy).not.toHaveBeenCalled()
+      expect(arrayExecutionSpy).not.toHaveBeenCalled()
+      expect(objectExecutionSpy).not.toHaveBeenCalled()
+    })
   })
 })
