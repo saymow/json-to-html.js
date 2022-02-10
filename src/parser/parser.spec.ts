@@ -12,11 +12,34 @@ jest.mock('./helpers', () => ({
   isObject: jest.fn()
 }))
 
-const makeFakeSimpleData = (): any => ({
-  name: 'Gustavo',
-  surname: 'Alves',
-  age: 21,
-  email: 'gustavo_alves2010@yahoo.com.br'
+interface FakeData {
+  primitive1: number
+  primitive2: string
+  array1: number[]
+  array2: string[]
+  obj1: {
+    foo: number
+    bar: number
+  }
+  obj2: {
+    lat: number
+    long: number
+  }
+}
+
+const makeFakeData = (): FakeData => ({
+  primitive1: -11.492639,
+  primitive2: '6205916b48f075831ce81ff3',
+  array1: [1, 2, 3],
+  array2: ['a', 'b', 'c'],
+  obj1: {
+    foo: 1,
+    bar: 2
+  },
+  obj2: {
+    lat: 2.684125,
+    long: 135.424748
+  }
 })
 
 export const makeContainerEl = (): HTMLElement => {
@@ -51,7 +74,7 @@ describe('Parser', () => {
       mockIsArray.mockReturnValue(false)
       mockIsObject.mockReturnValue(true)
 
-      const data = makeFakeSimpleData()
+      const data = makeFakeData()
       const containerEl = makeContainerEl()
       sut.execute(data, containerEl)
 
@@ -70,7 +93,7 @@ describe('Parser', () => {
       mockIsArray.mockReturnValue(true)
       mockIsObject.mockReturnValue(false)
 
-      const data = makeFakeSimpleData()
+      const data = makeFakeData()
       const containerEl = makeContainerEl()
       sut.execute(data, containerEl)
 
@@ -89,7 +112,7 @@ describe('Parser', () => {
       mockIsArray.mockReturnValue(false)
       mockIsObject.mockReturnValue(false)
 
-      const data = makeFakeSimpleData()
+      const data = makeFakeData()
       const containerEl = makeContainerEl()
       sut.execute(data, containerEl)
 
@@ -108,13 +131,23 @@ describe('Parser', () => {
       mockIsArray.mockReturnValue(false)
       mockIsObject.mockReturnValue(false)
 
-      const data = makeFakeSimpleData()
+      const data = makeFakeData()
       const containerEl = makeContainerEl()
       sut.execute(data, containerEl)
 
       expect(primitiveExecutionSpy).not.toHaveBeenCalled()
       expect(arrayExecutionSpy).not.toHaveBeenCalled()
       expect(objectExecutionSpy).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('objectExecution', () => {
+    it('Should call elementsFactory.createObjectContainer once', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const createObjectContainerSpy = jest.spyOn(elementsFactorySpy, 'createObjectContainer')
+      sut.objectExecution({}, makeContainerEl())
+
+      expect(createObjectContainerSpy).toHaveBeenCalledTimes(1)
     })
   })
 })
