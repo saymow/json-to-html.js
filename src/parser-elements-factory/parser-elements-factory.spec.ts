@@ -70,4 +70,14 @@ describe('ParserElementsFactory', () => {
       expect(arraySection.contains(elementsFactorySpy.createSectionHeaderResult)).toBeTruthy()
     })
   })
+
+  describe('createArrayContainer', () => {
+    it('Should call elementsFactory.createContainer once', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const createContainerSpy = jest.spyOn(elementsFactorySpy, 'createContainer')
+      sut.createArrayContainer()
+
+      expect(createContainerSpy).toHaveBeenCalledTimes(1)
+    })
+  })
 })
