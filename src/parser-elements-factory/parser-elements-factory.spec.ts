@@ -134,5 +134,12 @@ describe('ParserElementsFactory', () => {
 
       expect(elementsFactorySpy.createValueValue).toBe(value)
     })
+
+    it('Should create a valid value', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const value = sut.createValue(faker.random.words())
+
+      expect(value).toBe(elementsFactorySpy.createValueResult)
+    })
   })
 })
