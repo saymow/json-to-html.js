@@ -88,4 +88,14 @@ describe('ParserElementsFactory', () => {
       expect(Array.from(arrayContainer.classList).includes('array'))
     })
   })
+
+  describe('createObjectContainer', () => {
+    it('Should call elementsFactory.createContainer once', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const createContainerSpy = jest.spyOn(elementsFactorySpy, 'createContainer')
+      sut.createObjectContainer()
+
+      expect(createContainerSpy).toHaveBeenCalledTimes(1)
+    })
+  })
 })
