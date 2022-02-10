@@ -1,11 +1,16 @@
 import { ParserElementsFactorySpy } from './test/mock-parser-elements-factory'
+import { isPrimitive, isArray, isObject } from './helpers'
 import { Parser } from './parser'
-import { isObject, isArray, isPrimitive } from './helpers'
 
-interface SutTypes {
-  elementsFactorySpy: ParserElementsFactorySpy
-  sut: Parser
-}
+const mockIsPrimitive = isPrimitive as jest.Mock
+const mockIsArray = isArray as jest.Mock
+const mockIsObject = isObject as jest.Mock
+
+jest.mock('./helpers', () => ({
+  isPrimitive: jest.fn(),
+  isArray: jest.fn(),
+  isObject: jest.fn()
+}))
 
 const makeFakeSimpleData = (): any => ({
   name: 'Gustavo',
@@ -18,6 +23,11 @@ export const makeContainerEl = (): HTMLElement => {
   return document.createElement('div')
 }
 
+interface SutTypes {
+  elementsFactorySpy: ParserElementsFactorySpy
+  sut: Parser
+}
+
 const makeSut = (): SutTypes => {
   const elementsFactorySpy = new ParserElementsFactorySpy()
   const sut = new Parser(elementsFactorySpy)
@@ -27,15 +37,19 @@ const makeSut = (): SutTypes => {
 
 describe('Parser', () => {
   describe('execute', () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
     it('Should only call objectExecution only and if only isObject returns true', () => {
       const { sut } = makeSut()
-      const primitiveExecutionSpy = jest.spyOn(sut, 'primitiveExecution')
-      const arrayExecutionSpy = jest.spyOn(sut, 'arrayExecution')
-      const objectExecutionSpy = jest.spyOn(sut, 'objectExecution')
+      const primitiveExecutionSpy = jest.spyOn(sut, 'primitiveExecution').mockImplementationOnce(() => { })
+      const arrayExecutionSpy = jest.spyOn(sut, 'arrayExecution').mockImplementationOnce(() => { })
+      const objectExecutionSpy = jest.spyOn(sut, 'objectExecution').mockImplementationOnce(() => { })
 
-      jest.fn(isObject).mockReturnValueOnce(true)
-      jest.fn(isArray).mockReturnValueOnce(false)
-      jest.fn(isPrimitive).mockReturnValueOnce(false)
+      mockIsPrimitive.mockReturnValue(false)
+      mockIsArray.mockReturnValue(false)
+      mockIsObject.mockReturnValue(true)
 
       const data = makeFakeSimpleData()
       const containerEl = makeContainerEl()
@@ -44,6 +58,25 @@ describe('Parser', () => {
       expect(objectExecutionSpy).toHaveBeenCalledWith(data, containerEl)
       expect(primitiveExecutionSpy).not.toHaveBeenCalled()
       expect(arrayExecutionSpy).not.toHaveBeenCalled()
+    })
+
+    it('Should only call arrayExecution only and if only isArray returns true', () => {
+      const { sut } = makeSut()
+      const primitiveExecutionSpy = jest.spyOn(sut, 'primitiveExecution').mockImplementationOnce(() => { })
+      const arrayExecutionSpy = jest.spyOn(sut, 'arrayExecution').mockImplementationOnce(() => { })
+      const objectExecutionSpy = jest.spyOn(sut, 'objectExecution').mockImplementationOnce(() => { })
+
+      mockIsPrimitive.mockReturnValue(false)
+      mockIsArray.mockReturnValue(true)
+      mockIsObject.mockReturnValue(false)
+
+      const data = makeFakeSimpleData()
+      const containerEl = makeContainerEl()
+      sut.execute(data, containerEl)
+
+      expect(arrayExecutionSpy).toHaveBeenCalledWith(data, containerEl)
+      expect(primitiveExecutionSpy).not.toHaveBeenCalled()
+      expect(objectExecutionSpy).not.toHaveBeenCalled()
     })
   })
 })
