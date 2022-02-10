@@ -27,7 +27,7 @@ interface FakeData {
   }
 }
 
-const makeFakeData = (): FakeData => ({
+const makeFakeObjectContainerData = (): FakeData => ({
   primitive1: -11.492639,
   primitive2: '6205916b48f075831ce81ff3',
   array1: [1, 2, 3],
@@ -74,7 +74,7 @@ describe('Parser', () => {
       mockIsArray.mockReturnValue(false)
       mockIsObject.mockReturnValue(true)
 
-      const data = makeFakeData()
+      const data = makeFakeObjectContainerData()
       const containerEl = makeContainerEl()
       sut.execute(data, containerEl)
 
@@ -93,7 +93,7 @@ describe('Parser', () => {
       mockIsArray.mockReturnValue(true)
       mockIsObject.mockReturnValue(false)
 
-      const data = makeFakeData()
+      const data = makeFakeObjectContainerData()
       const containerEl = makeContainerEl()
       sut.execute(data, containerEl)
 
@@ -112,7 +112,7 @@ describe('Parser', () => {
       mockIsArray.mockReturnValue(false)
       mockIsObject.mockReturnValue(false)
 
-      const data = makeFakeData()
+      const data = makeFakeObjectContainerData()
       const containerEl = makeContainerEl()
       sut.execute(data, containerEl)
 
@@ -131,7 +131,7 @@ describe('Parser', () => {
       mockIsArray.mockReturnValue(false)
       mockIsObject.mockReturnValue(false)
 
-      const data = makeFakeData()
+      const data = makeFakeObjectContainerData()
       const containerEl = makeContainerEl()
       sut.execute(data, containerEl)
 
@@ -145,9 +145,18 @@ describe('Parser', () => {
     it('Should call elementsFactory.createObjectContainer once', () => {
       const { sut, elementsFactorySpy } = makeSut()
       const createObjectContainerSpy = jest.spyOn(elementsFactorySpy, 'createObjectContainer')
-      sut.objectExecution({}, makeContainerEl())
+      sut.objectExecution(makeFakeObjectContainerData(), makeContainerEl())
 
       expect(createObjectContainerSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('Should append the objectContainer to the given container', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const containerEl = makeContainerEl()
+      sut.objectExecution(makeFakeObjectContainerData(), containerEl)
+
+      expect(containerEl.children.length).toBe(1)
+      expect(Array.from(containerEl.children).includes(elementsFactorySpy.createObjectContainerResult)).toBeTruthy()
     })
   })
 })
