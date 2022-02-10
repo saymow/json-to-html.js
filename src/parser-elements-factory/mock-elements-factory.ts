@@ -3,12 +3,12 @@ import { IElementsFactory } from './protocols'
 export class ElementsFactorySpy implements IElementsFactory {
   createSectionResult = this.randomHtmlElement()
   createContainerResult = this.randomHtmlElement()
-  createSectionHeaderPlainText!: string
+  createSectionHeaderPlainText?: string
   createSectionHeaderResult = this.randomHtmlElement()
-  createFieldKey!: string
-  createFieldValue!: string
+  createFieldKey?: string
+  createFieldValue?: string
   createFieldResult = this.randomHtmlElement()
-  createValueValue!: string
+  createValueValue?: string
   createValueResult = this.randomHtmlElement()
 
   createSection (): HTMLElement {
