@@ -217,6 +217,24 @@ describe('Parser', () => {
           expect(elementsFactorySpy.createObjectContainerResult.contains(createFieldResult.value)).toBeTruthy()
         })
       })
+
+      it('Should call execute, once, for each arraySection with correct values if isArray returns true', () => {
+        const { sut, elementsFactorySpy } = makeSut()
+        const executeSpy = jest.spyOn(sut, 'execute').mockImplementation(() => { })
+        const createArraySectionSpy = jest.spyOn(elementsFactorySpy, 'createArraySection').mockImplementation(() => makeRandomEl())
+
+        mockIsArray.mockReturnValue(true)
+        mockIsPrimitive.mockReturnValue(false)
+        mockIsObject.mockReturnValue(false)
+
+        const data = makeFakeObjectContainerData()
+        sut.objectExecution(data, makeContainerEl())
+
+        console.log(Object.values(data).map((value: any, i: number) => [value, createArraySectionSpy.mock.results[i]]))
+        console.log(executeSpy.mock.calls)
+
+        expect(Object.values(data).map((value: any, i: number) => [value, createArraySectionSpy.mock.results[i].value])).toEqual(executeSpy.mock.calls)
+      })
     })
   })
 })
