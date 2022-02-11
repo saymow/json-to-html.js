@@ -218,7 +218,7 @@ describe('Parser', () => {
         })
       })
 
-      it('Should call execute, once, for each arraySection with correct values if isArray returns true', () => {
+      it('Should call execute, once, for each arraySection, with correct values if isArray returns true', () => {
         const { sut, elementsFactorySpy } = makeSut()
         const executeSpy = jest.spyOn(sut, 'execute').mockImplementation(() => { })
         const createArraySectionSpy = jest.spyOn(elementsFactorySpy, 'createArraySection').mockImplementation(() => makeRandomEl())
@@ -263,6 +263,24 @@ describe('Parser', () => {
         createObjectSectionSpy.mock.results.forEach((createFieldResult) => {
           expect(elementsFactorySpy.createObjectContainerResult.contains(createFieldResult.value)).toBeTruthy()
         })
+      })
+
+      it('Should call execute, once, for each objectSection, with correct values if isObject returns true', () => {
+        const { sut, elementsFactorySpy } = makeSut()
+        const executeSpy = jest.spyOn(sut, 'execute').mockImplementation(() => { })
+        const createObjectSectionSpy = jest.spyOn(elementsFactorySpy, 'createObjectSection').mockImplementation(() => makeRandomEl())
+
+        mockIsObject.mockReturnValue(true)
+        mockIsArray.mockReturnValue(false)
+        mockIsPrimitive.mockReturnValue(false)
+
+        const data = makeFakeObjectContainerData()
+        sut.objectExecution(data, makeContainerEl())
+
+        console.log(Object.values(data).map((value: any, i: number) => [value, createObjectSectionSpy.mock.results[i]]))
+        console.log(executeSpy.mock.calls)
+
+        expect(Object.values(data).map((value: any, i: number) => [value, createObjectSectionSpy.mock.results[i].value])).toEqual(executeSpy.mock.calls)
       })
     })
   })
