@@ -283,5 +283,26 @@ describe('Parser', () => {
         expect(Object.values(data).map((value: any, i: number) => [value, createObjectSectionSpy.mock.results[i].value])).toEqual(executeSpy.mock.calls)
       })
     })
+
+    describe('unhandled branch', () => {
+      it('Should call nothing (for each object field) if isPrimitive, isArray and isObject returns false', () => {
+        const { sut, elementsFactorySpy } = makeSut()
+        const executeSpy = jest.spyOn(sut, 'execute').mockImplementation(() => { })
+        const createFieldSpy = jest.spyOn(elementsFactorySpy, 'createField').mockImplementation(() => makeRandomEl())
+        const createArraySectionSpy = jest.spyOn(elementsFactorySpy, 'createArraySection').mockImplementation(() => makeRandomEl())
+        const createObjectSectionSpy = jest.spyOn(elementsFactorySpy, 'createObjectSection').mockImplementation(() => makeRandomEl())
+
+        mockIsObject.mockReturnValue(false)
+        mockIsArray.mockReturnValue(false)
+        mockIsPrimitive.mockReturnValue(false)
+
+        sut.objectExecution(makeFakeObjectContainerData(), makeContainerEl())
+
+        expect(executeSpy).not.toHaveBeenCalled()
+        expect(createFieldSpy).not.toHaveBeenCalled()
+        expect(createArraySectionSpy).not.toHaveBeenCalled()
+        expect(createObjectSectionSpy).not.toHaveBeenCalled()
+      })
+    })
   })
 })
