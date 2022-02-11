@@ -44,6 +44,10 @@ const makeFakeObjectContainerData = (): FakeData => ({
 })
 
 export const makeContainerEl = (): HTMLElement => {
+  return makeRandomEl()
+}
+
+export const makeRandomEl = (): HTMLElement => {
   return document.createElement('div')
 }
 
@@ -160,26 +164,58 @@ describe('Parser', () => {
       expect(Array.from(containerEl.children).includes(elementsFactorySpy.createObjectContainerResult)).toBeTruthy()
     })
 
-    it('Should only call (once for each object field) elementsFactory.createField, with correct values, and append its return element to objectContainer if isPrimitive returns true', () => {
-      const { sut, elementsFactorySpy } = makeSut()
-      const createFieldSpy = jest.spyOn(elementsFactorySpy, 'createField')
-      const createArraySectionSpy = jest.spyOn(elementsFactorySpy, 'createArraySection')
-      const createObjectSectionSpy = jest.spyOn(elementsFactorySpy, 'createObjectSection')
+    describe('isPrimitive branch', () => {
+      it('Should only call (once for each object field) elementsFactory.createField, with correct values, and append its return element to objectContainer if isPrimitive returns true', () => {
+        const { sut, elementsFactorySpy } = makeSut()
+        jest.spyOn(sut, 'execute').mockImplementation(() => { })
+        const createFieldSpy = jest.spyOn(elementsFactorySpy, 'createField').mockImplementation(() => makeRandomEl())
+        const createArraySectionSpy = jest.spyOn(elementsFactorySpy, 'createArraySection').mockImplementation(() => makeRandomEl())
+        const createObjectSectionSpy = jest.spyOn(elementsFactorySpy, 'createObjectSection').mockImplementation(() => makeRandomEl())
 
-      mockIsPrimitive.mockReturnValue(true)
-      mockIsArray.mockReturnValue(false)
-      mockIsObject.mockReturnValue(false)
+        mockIsPrimitive.mockReturnValue(true)
+        mockIsArray.mockReturnValue(false)
+        mockIsObject.mockReturnValue(false)
 
-      const data = makeFakeObjectContainerData()
-      sut.objectExecution(data, makeContainerEl())
+        const data = makeFakeObjectContainerData()
+        sut.objectExecution(data, makeContainerEl())
 
-      expect(createFieldSpy).toHaveBeenCalled()
-      expect(createArraySectionSpy).not.toHaveBeenCalled()
-      expect(createObjectSectionSpy).not.toHaveBeenCalled()
+        expect(createFieldSpy).toHaveBeenCalled()
+        expect(createArraySectionSpy).not.toHaveBeenCalled()
+        expect(createObjectSectionSpy).not.toHaveBeenCalled()
 
-      expect(Object.entries(data)).toEqual(createFieldSpy.mock.calls)
-      createFieldSpy.mock.results.forEach((createFieldResult) => {
-        expect(elementsFactorySpy.createObjectContainerResult.contains(createFieldResult.value)).toBeTruthy()
+        expect(Object.entries(data)).toEqual(createFieldSpy.mock.calls)
+        createFieldSpy.mock.results.forEach((createFieldResult) => {
+          expect(elementsFactorySpy.createObjectContainerResult.contains(createFieldResult.value)).toBeTruthy()
+        })
+      })
+    })
+
+    describe('isArray branch', () => {
+      it('Should only call (once for each object field) elementsFactory.createArraySection, with correct values, and append its return element to objectContainer if isArray returns true', () => {
+        const { sut, elementsFactorySpy } = makeSut()
+        jest.spyOn(sut, 'execute').mockImplementation(() => { })
+        const createFieldSpy = jest.spyOn(elementsFactorySpy, 'createField').mockImplementation(() => makeRandomEl())
+        const createArraySectionSpy = jest.spyOn(elementsFactorySpy, 'createArraySection').mockImplementation(() => makeRandomEl())
+        const createObjectSectionSpy = jest.spyOn(elementsFactorySpy, 'createObjectSection').mockImplementation(() => makeRandomEl())
+
+        mockIsArray.mockReturnValue(true)
+        mockIsPrimitive.mockReturnValue(false)
+        mockIsObject.mockReturnValue(false)
+
+        const data = makeFakeObjectContainerData()
+        sut.objectExecution(data, makeContainerEl())
+
+        expect(createArraySectionSpy).toHaveBeenCalled()
+        expect(createFieldSpy).not.toHaveBeenCalled()
+        expect(createObjectSectionSpy).not.toHaveBeenCalled()
+
+        console.log(Object.keys(data))
+        console.log(createArraySectionSpy.mock.calls)
+
+        expect(Object.keys(data).map(key => [key])).toEqual(createArraySectionSpy.mock.calls)
+        createArraySectionSpy.mock.results.forEach((createFieldResult) => {
+          expect(elementsFactorySpy.createObjectContainerResult.contains(createFieldResult.value)).toBeTruthy()
+        })
       })
     })
   })
