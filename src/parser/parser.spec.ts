@@ -69,6 +69,26 @@ describe('Parser', () => {
       jest.clearAllMocks()
     })
 
+    it('Should call isPrimitive, isArray and isObject once and with correct value', () => {
+      const { sut } = makeSut()
+
+      mockIsPrimitive.mockReturnValue(false)
+      mockIsArray.mockReturnValue(false)
+      mockIsObject.mockReturnValue(false)
+
+      const data = makeFakeObjectContainerData()
+      const containerEl = makeContainerEl()
+      sut.execute(data, containerEl)
+
+      expect(mockIsPrimitive).toBeCalledTimes(1)
+      expect(mockIsArray).toBeCalledTimes(1)
+      expect(mockIsObject).toBeCalledTimes(1)
+
+      expect(mockIsPrimitive.mock.calls[0]).toEqual([data])
+      expect(mockIsArray.mock.calls[0]).toEqual([data])
+      expect(mockIsObject.mock.calls[0]).toEqual([data])
+    })
+
     it('Should only call objectExecution only and if only isObject returns true', () => {
       const { sut } = makeSut()
       const primitiveExecutionSpy = jest.spyOn(sut, 'primitiveExecution').mockImplementationOnce(() => { })
