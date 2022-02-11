@@ -1,5 +1,6 @@
 import { ParserElementsFactorySpy } from './test/mock-parser-elements-factory'
 import { isPrimitive, isArray, isObject } from './helpers'
+import faker from 'faker'
 import { Parser } from './parser'
 
 const mockIsPrimitive = isPrimitive as jest.Mock
@@ -28,17 +29,17 @@ interface FakeData {
 }
 
 const makeFakeObjectContainerData = (): FakeData => ({
-  primitive1: -11.492639,
-  primitive2: '6205916b48f075831ce81ff3',
-  array1: [1, 2, 3],
-  array2: ['a', 'b', 'c'],
+  primitive1: faker.random.number(),
+  primitive2: faker.random.word(),
+  array1: [faker.random.number(), faker.random.number(), faker.random.number()],
+  array2: [faker.random.word(), faker.random.word(), faker.random.word()],
   obj1: {
-    foo: 1,
-    bar: 2
+    foo: faker.random.number(),
+    bar: faker.random.number()
   },
   obj2: {
-    lat: 2.684125,
-    long: 135.424748
+    lat: faker.random.number(),
+    long: faker.random.number()
   }
 })
 
@@ -157,6 +158,29 @@ describe('Parser', () => {
 
       expect(containerEl.children.length).toBe(1)
       expect(Array.from(containerEl.children).includes(elementsFactorySpy.createObjectContainerResult)).toBeTruthy()
+    })
+
+    it('Should only call (once for each object field) elementsFactory.createField, with correct values, and append its return element to objectContainer if isPrimitive returns true', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const createFieldSpy = jest.spyOn(elementsFactorySpy, 'createField')
+      const createArraySectionSpy = jest.spyOn(elementsFactorySpy, 'createArraySection')
+      const createObjectSectionSpy = jest.spyOn(elementsFactorySpy, 'createObjectSection')
+
+      mockIsPrimitive.mockReturnValue(true)
+      mockIsArray.mockReturnValue(false)
+      mockIsObject.mockReturnValue(false)
+
+      const data = makeFakeObjectContainerData()
+      sut.objectExecution(data, makeContainerEl())
+
+      expect(createFieldSpy).toHaveBeenCalled()
+      expect(createArraySectionSpy).not.toHaveBeenCalled()
+      expect(createObjectSectionSpy).not.toHaveBeenCalled()
+
+      expect(Object.entries(data)).toEqual(createFieldSpy.mock.calls)
+      createFieldSpy.mock.results.forEach((createFieldResult) => {
+        expect(elementsFactorySpy.createObjectContainerResult.contains(createFieldResult.value)).toBeTruthy()
+      })
     })
   })
 })
