@@ -43,6 +43,8 @@ const makeFakeObjectContainerData = (): FakeData => ({
   }
 })
 
+const makeFakeObjectContainerData2 = (): string[] => [faker.random.word(), faker.random.word(), faker.random.word()]
+
 export const makeContainerEl = (): HTMLElement => {
   return makeRandomEl()
 }
@@ -330,6 +332,16 @@ describe('Parser', () => {
         expect(createArraySectionSpy).not.toHaveBeenCalled()
         expect(createObjectSectionSpy).not.toHaveBeenCalled()
       })
+    })
+  })
+
+  describe('arrayExecution', () => {
+    it('Should call elementsFactory.createArrayContainer once', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const createArrayContainerSpy = jest.spyOn(elementsFactorySpy, 'createArrayContainer')
+      sut.arrayExecution(makeFakeObjectContainerData2(), makeContainerEl())
+
+      expect(createArrayContainerSpy).toHaveBeenCalledTimes(1)
     })
   })
 })
