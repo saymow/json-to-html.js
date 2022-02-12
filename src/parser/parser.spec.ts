@@ -352,5 +352,15 @@ describe('Parser', () => {
       expect(containerEl.children.length).toBe(1)
       expect(Array.from(containerEl.children).includes(elementsFactorySpy.createArrayContainerResult)).toBeTruthy()
     })
+
+    it('Should call execute (once for each array item), with correct values', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const executeSpy = jest.spyOn(sut, 'execute').mockImplementation(() => {})
+
+      const data = makeFakeObjectContainerData2()
+      sut.arrayExecution(data, makeContainerEl())
+
+      expect(executeSpy.mock.calls).toEqual(data.map((value) => ([value, elementsFactorySpy.createArrayContainerResult])))
+    })
   })
 })
