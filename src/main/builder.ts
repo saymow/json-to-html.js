@@ -1,8 +1,8 @@
-import { Json2Html } from './presentation/json2html'
-import { DefaultElementsFactory } from './default-elements-factory/default-elements-factory'
-import { ParserElementsFactory } from './parser-elements-factory/parser-elements-factory'
-import { IElementsFactory } from './parser-elements-factory/protocols'
-import { Parser } from './parser/parser'
+import { Json2Html } from '../presentation/json2html'
+import { DefaultElementsFactory } from '../default-elements-factory/default-elements-factory'
+import { ParserElementsFactory } from '../parser-elements-factory/parser-elements-factory'
+import { IElementsFactory } from '../parser-elements-factory/protocols'
+import { Parser } from '../parser/parser'
 
 export default class JsonToHtmlBuilder {
   private readonly elementsFactory: IElementsFactory = new DefaultElementsFactory()
