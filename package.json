@@ -1,11 +1,11 @@
 {
   "name": "json-to-html.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An application that parses json to a html structure.",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saymow/json2html"
+    "url": "git+https://github.com/saymow/json-to-html.js"
   },
   "keywords": [
     "JSON-TO-HTML",
