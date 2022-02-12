@@ -64,11 +64,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Parser', () => {
-  describe('execute', () => {
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
+  beforeEach(() => {
+    mockIsArray.mockClear()
+    mockIsPrimitive.mockClear()
+    mockIsObject.mockClear()
+  })
 
+  describe('execute', () => {
     it('Should call isPrimitive, isArray and isObject once and with correct value', () => {
       const { sut } = makeSut()
 
@@ -184,6 +186,23 @@ describe('Parser', () => {
       expect(Array.from(containerEl.children).includes(elementsFactorySpy.createObjectContainerResult)).toBeTruthy()
     })
 
+    it('Should call (once for each object field) isPrimitive, isArray and isObject with correct value', () => {
+      const { sut } = makeSut()
+
+      mockIsPrimitive.mockReturnValue(false)
+      mockIsArray.mockReturnValue(false)
+      mockIsObject.mockReturnValue(false)
+
+      const data = makeFakeObjectContainerData()
+      const dataValues = Object.values(data)
+      const containerEl = makeContainerEl()
+      sut.objectExecution(data, containerEl)
+
+      expect(mockIsPrimitive.mock.calls).toEqual(dataValues.map((value) => [value]))
+      expect(mockIsArray.mock.calls).toEqual(dataValues.map((value) => [value]))
+      expect(mockIsObject.mock.calls).toEqual(dataValues.map((value) => [value]))
+    })
+
     describe('isPrimitive branch', () => {
       it('Should only call (once for each object field) elementsFactory.createField, with correct values, and append its return element to objectContainer if isPrimitive returns true', () => {
         const { sut, elementsFactorySpy } = makeSut()
@@ -229,9 +248,6 @@ describe('Parser', () => {
         expect(createFieldSpy).not.toHaveBeenCalled()
         expect(createObjectSectionSpy).not.toHaveBeenCalled()
 
-        console.log(Object.keys(data))
-        console.log(createArraySectionSpy.mock.calls)
-
         expect(Object.keys(data).map(key => [key])).toEqual(createArraySectionSpy.mock.calls)
         createArraySectionSpy.mock.results.forEach((createFieldResult) => {
           expect(elementsFactorySpy.createObjectContainerResult.contains(createFieldResult.value)).toBeTruthy()
@@ -249,9 +265,6 @@ describe('Parser', () => {
 
         const data = makeFakeObjectContainerData()
         sut.objectExecution(data, makeContainerEl())
-
-        console.log(Object.values(data).map((value: any, i: number) => [value, createArraySectionSpy.mock.results[i]]))
-        console.log(executeSpy.mock.calls)
 
         expect(Object.values(data).map((value: any, i: number) => [value, createArraySectionSpy.mock.results[i].value])).toEqual(executeSpy.mock.calls)
       })
@@ -276,9 +289,6 @@ describe('Parser', () => {
         expect(createFieldSpy).not.toHaveBeenCalled()
         expect(createArraySectionSpy).not.toHaveBeenCalled()
 
-        console.log(Object.keys(data))
-        console.log(createArraySectionSpy.mock.calls)
-
         expect(Object.keys(data).map(key => [key])).toEqual(createObjectSectionSpy.mock.calls)
         createObjectSectionSpy.mock.results.forEach((createFieldResult) => {
           expect(elementsFactorySpy.createObjectContainerResult.contains(createFieldResult.value)).toBeTruthy()
@@ -296,9 +306,6 @@ describe('Parser', () => {
 
         const data = makeFakeObjectContainerData()
         sut.objectExecution(data, makeContainerEl())
-
-        console.log(Object.values(data).map((value: any, i: number) => [value, createObjectSectionSpy.mock.results[i]]))
-        console.log(executeSpy.mock.calls)
 
         expect(Object.values(data).map((value: any, i: number) => [value, createObjectSectionSpy.mock.results[i].value])).toEqual(executeSpy.mock.calls)
       })
