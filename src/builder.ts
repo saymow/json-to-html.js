@@ -1,4 +1,4 @@
-import { Json2Html } from './presentation'
+import { Json2Html } from './presentation/json2html'
 import { DefaultElementsFactory } from './default-elements-factory/default-elements-factory'
 import { ParserElementsFactory } from './parser-elements-factory/parser-elements-factory'
 import { IElementsFactory } from './parser-elements-factory/protocols'
