@@ -18,17 +18,19 @@
     "Parser"
   ],
   "scripts": {
+    "prepare": "husky install",
     "dev": "concurrently \"npm run build:watch\" \"npm run start:playground\"",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:watch": "npm run test -- --watch",
-    "test:staged": "npm run test -- --findRelatedTests",
     "build": "tsc --project tsconfig-build.json",
     "build:watch": "tsc -w --project tsconfig-build.json",
     "prebuild:playground": "npm run build",
     "build:playground": "cd playground && npm run build",
     "install:playground": "cd playground && npm install",
     "start:playground": "cd playground && npm start",
-    "prepare": "husky install"
+    "test:watch": "npm run test -- --watch",
+    "test:staged": "npm run test -- --findRelatedTests",
+    "test:ci": "npm test -- --coverage",
+    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
   },
   "author": "Gustavo Alves",
   "license": "ISC",
