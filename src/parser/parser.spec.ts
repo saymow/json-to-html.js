@@ -343,5 +343,14 @@ describe('Parser', () => {
 
       expect(createArrayContainerSpy).toHaveBeenCalledTimes(1)
     })
+
+    it('Should append the arrayContainer to the given container', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const containerEl = makeContainerEl()
+      sut.arrayExecution(makeFakeObjectContainerData2(), containerEl)
+
+      expect(containerEl.children.length).toBe(1)
+      expect(Array.from(containerEl.children).includes(elementsFactorySpy.createArrayContainerResult)).toBeTruthy()
+    })
   })
 })
