@@ -1,6 +1,6 @@
 {
   "name": "json-to-html.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An application that parses json to a html structure.",
   "main": "dist/index.js",
   "repository": {
@@ -23,9 +23,9 @@
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "build": "tsc --project tsconfig-build.json",
     "build:watch": "tsc -w --project tsconfig-build.json",
-    "prebuild:playground": "npm run build",
-    "build:playground": "cd playground && npm run build",
+    "ci:playground": "cd playground && npm ci",
     "install:playground": "cd playground && npm install",
+    "build:playground": "cd playground && npm run build",
     "start:playground": "cd playground && npm start",
     "test:watch": "npm run test -- --watch",
     "test:staged": "npm run test -- --findRelatedTests",

@@ -1,3 +1,5 @@
-playground/**
-node_modules/**
-dist/**
+# Ignore every file in the repo
+/*
+
+# Then unignore the dist folder
+!/dist

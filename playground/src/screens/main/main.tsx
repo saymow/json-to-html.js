@@ -1,4 +1,4 @@
-import Json2HtmlBuilder from 'json2html'
+import Json2HtmlBuilder from 'json-to-html.js'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Card from '../../components/card/card'

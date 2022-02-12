@@ -1,1 +1,1 @@
-declare module "json2html" 
+declare module "json-to-html.js" 
