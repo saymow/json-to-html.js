@@ -376,5 +376,14 @@ describe('Parser', () => {
       expect(createValueSpy).toHaveBeenCalledTimes(1)
       expect(createValueSpy).toHaveBeenCalledWith(data)
     })
+
+    it('Should append the value to the given container', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const containerEl = makeContainerEl()
+      sut.primitiveExecution(makeFakeObjectContainerData3(), containerEl)
+
+      expect(containerEl.children.length).toBe(1)
+      expect(Array.from(containerEl.children).includes(elementsFactorySpy.createValueResult)).toBeTruthy()
+    })
   })
 })
