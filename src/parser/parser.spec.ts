@@ -45,6 +45,8 @@ const makeFakeObjectContainerData = (): FakeData => ({
 
 const makeFakeObjectContainerData2 = (): string[] => [faker.random.word(), faker.random.word(), faker.random.word()]
 
+const makeFakeObjectContainerData3 = (): string => faker.random.word()
+
 export const makeContainerEl = (): HTMLElement => {
   return makeRandomEl()
 }
@@ -355,12 +357,24 @@ describe('Parser', () => {
 
     it('Should call execute (once for each array item), with correct values', () => {
       const { sut, elementsFactorySpy } = makeSut()
-      const executeSpy = jest.spyOn(sut, 'execute').mockImplementation(() => {})
+      const executeSpy = jest.spyOn(sut, 'execute').mockImplementation(() => { })
 
       const data = makeFakeObjectContainerData2()
       sut.arrayExecution(data, makeContainerEl())
 
       expect(executeSpy.mock.calls).toEqual(data.map((value) => ([value, elementsFactorySpy.createArrayContainerResult])))
+    })
+  })
+
+  describe('primitiveExecution', () => {
+    it('Should call elementsFactory.createValue, with correct values, once', () => {
+      const { sut, elementsFactorySpy } = makeSut()
+      const createValueSpy = jest.spyOn(elementsFactorySpy, 'createValue')
+      const data = makeFakeObjectContainerData3()
+      sut.primitiveExecution(data, makeContainerEl())
+
+      expect(createValueSpy).toHaveBeenCalledTimes(1)
+      expect(createValueSpy).toHaveBeenCalledWith(data)
     })
   })
 })
