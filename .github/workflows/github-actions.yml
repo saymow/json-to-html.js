@@ -26,9 +26,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - nun: npm ci        
-    - run: npm run build --if-present
-    - run: npm run build:playground 
-    - run: eslint 'src/**'
-    - run: npm test:coveralls
+    - name: Install project with a clean slate
+      run: npm ci
+    - name: "Build project"       
+      run: npm run build --if-present
+    - name: Build project playground
+      run: npm run build:playground
+    - name: Run linters
+      run: eslint 'src/**'
+    - name: "Run tests with coverage"
+      run: npm test:coveralls
 
