@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -26,14 +26,44 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
     - name: Install project with a clean slate
       run: npm ci
-    - name: "Build project"       
+
+    - name: Build project       
       run: npm run build --if-present
-    - name: Build project playground
-      run: npm run build:playground
+
     - name: Run linters
-      run: eslint 'src/**'
-    - name: "Run tests with coverage"
-      run: npm test:coveralls
+      run: npm run lint
+
+    - name: Run tests coverage
+      run: npm run test:ci
+
+    - name: Publish to coveralls.io
+      uses: coverallsapp/github-action@v1.1.2
+      with:
+        github-token: ${{ github.token }}
+
+  build-playground:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install playground project with a clean slate
+      run: npm run ci:playground
+
+    - name: Build playground project       
+      run: npm run build:playground
 
