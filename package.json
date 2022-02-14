@@ -1,6 +1,6 @@
 {
   "name": "json-to-html.js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An application that parses json to a html structure.",
   "main": "dist/index.js",
   "repository": {
