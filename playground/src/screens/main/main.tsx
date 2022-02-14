@@ -1,4 +1,4 @@
-import Json2HtmlBuilder from 'json-to-html.js'
+import JsonToHtmlBuilder from 'json-to-html.js'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Card from '../../components/card/card'
@@ -39,8 +39,9 @@ const Main: React.FC = () => {
 
   useEffect(() => {
     if (containerRef.current) {
-      containerRef.current!.innerHTML = ''
-      new Json2HtmlBuilder(toSaveProps, containerRef.current).build().execute()
+      containerRef.current.innerHTML = ''
+
+      new JsonToHtmlBuilder(toSaveProps, containerRef.current).build().execute()
     }
   }, [toSaveProps])
 
